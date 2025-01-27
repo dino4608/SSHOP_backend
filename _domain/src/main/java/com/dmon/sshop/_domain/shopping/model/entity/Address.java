@@ -1,6 +1,6 @@
 package com.dmon.sshop._domain.shopping.model.entity;
 
-import com.dmon.sshop._domain.identity.model.entity.User;
+import com.dmon.sshop._domain.identity.model.entity.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,9 +31,9 @@ public class Address {
     String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", updatable = false, nullable = false)
+    @JoinColumn(name = "buyerId", updatable = false, nullable = false)
     @JsonIgnore
-    User user;
+    Account buyer;
 
     @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
     @JsonIgnore

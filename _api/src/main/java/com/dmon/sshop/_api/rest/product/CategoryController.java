@@ -106,7 +106,7 @@ public class CategoryController {
     @RequestMapping("/api/v1/category")
     @AllArgsConstructor
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-    public static class CategoryUserController {
+    public static class CategoryBuyerController {
         ICategoryAppService categoryAppService;
 
         //LIST//

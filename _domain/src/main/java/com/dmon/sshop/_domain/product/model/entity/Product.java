@@ -1,39 +1,19 @@
 package com.dmon.sshop._domain.product.model.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.dmon.sshop._domain.inventory.model.entity.Sku;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.Type;
-
 import com.dmon.sshop._domain.common.base.BaseEntity;
-import com.dmon.sshop._domain.identity.model.entity.Seller;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
+import com.dmon.sshop._domain.inventory.model.entity.Sku;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -48,14 +28,15 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "productId", updatable = false, nullable = false)
     String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sellerId", updatable = false, nullable = false)
-    Seller seller;
+    @JoinColumn(name = "shopId", updatable = false, nullable = false)
+    Shop shop;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryId", nullable = false)
@@ -66,6 +47,8 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     List<Sku> skus; //orphanRemoval: xóa các child mồ coi
+
+    String status;
 
     @Column(nullable = false)
     String name;
@@ -98,12 +81,8 @@ public class Product extends BaseEntity {
     @Column(columnDefinition = "jsonb")
     ArrayList<TierVariation> tierVariations;
 
-    String status;
-
     //NESTED OBJECTS//
-    public enum StatusType {
-        DRAFT, REVIEWING, LIVE, DEACTIVATED, SUSPENDED, DELETED,
-    }
+    public enum StatusType {DRAFT, REVIEWING, LIVE, DEACTIVATED, SUSPENDED, DELETED,}
 
     @Getter
     @Setter

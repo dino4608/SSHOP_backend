@@ -9,8 +9,12 @@ public interface IAccountJpaMapper extends JpaRepository<Account, String> {
     //FIND//
     Optional<Account> findByUsername(String username);
 
+    Optional<Account> findByEmail(String email);
+
     //EXIST//
     boolean existsByEmail(String email);
+
     boolean existsByPhone(String phone);
+
     boolean existsByUsername(String username);
 }

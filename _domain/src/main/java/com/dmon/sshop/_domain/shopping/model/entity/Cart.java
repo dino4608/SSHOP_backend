@@ -1,7 +1,7 @@
 package com.dmon.sshop._domain.shopping.model.entity;
 
 import com.dmon.sshop._domain.common.base.BaseEntity;
-import com.dmon.sshop._domain.identity.model.entity.User;
+import com.dmon.sshop._domain.identity.model.entity.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,9 +31,9 @@ public class Cart extends BaseEntity {
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", updatable = false, nullable = false)
+    @JoinColumn(name = "buyerId", updatable = false, nullable = false)
     @JsonIgnore
-    User user;
+    Account buyer;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     List<CartItem> items;

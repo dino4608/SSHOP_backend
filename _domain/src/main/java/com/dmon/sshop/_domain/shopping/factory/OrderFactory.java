@@ -26,9 +26,14 @@ public class OrderFactory {
     public static Order createOrder(Order order, Order.StatusType statusType) {
 
         switch (statusType) {
-            case DRAFT -> { return createOrderAsDraft(order); }
-            case UNPAID -> { return createOrderAsUnpaid(order); }
-            case PREPARING -> throw new AppException(ErrorCode.SYSTEM__DEVELOPING_FEATURE);
+            case DRAFT -> {
+                return createOrderAsDraft(order);
+            }
+            case UNPAID -> {
+                return createOrderAsUnpaid(order);
+            }
+            case PREPARING, TRANSIT, DELIVERING, DELIVERED, CANCELED, RETURN ->
+                throw new AppException(ErrorCode.SYSTEM__DEVELOPING_FEATURE);
         }
 
         throw new AppException(ErrorCode.SYSTEM__KEY_UNSUPPORTED);
@@ -89,11 +94,10 @@ public class OrderFactory {
 
     private static float createSubtotal(Order order) {
         if (AppUtil.isEmpty(order.getSubtotal()))
-            order.setSubtotal(0); //todo: debug
+            order.setSubtotal(0); // todo: debug
 
-        order.getItems().stream().parallel().forEach((item) ->
-                order.setSubtotal(
-                        order.getSubtotal() + item.getLockedPrice() * item.getQuantity()));
+        order.getItems().stream().parallel().forEach((item) -> order.setSubtotal(
+                order.getSubtotal() + item.getLockedPrice() * item.getQuantity()));
 
         return order.getSubtotal();
     }

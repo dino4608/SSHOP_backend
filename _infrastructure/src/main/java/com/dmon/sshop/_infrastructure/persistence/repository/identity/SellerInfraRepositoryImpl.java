@@ -1,6 +1,6 @@
 package com.dmon.sshop._infrastructure.persistence.repository.identity;
 
-import com.dmon.sshop._domain.identity.model.entity.Seller;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
 import com.dmon.sshop._domain.identity.repository.ISellerDomainRepository;
 import com.dmon.sshop._infrastructure.persistence.jpa.identity.ISellerJpaMapper;
 import lombok.AccessLevel;
@@ -19,12 +19,12 @@ public class SellerInfraRepositoryImpl implements ISellerDomainRepository {
     ISellerJpaMapper sellerJpaMapper;
 
     @Override
-    public Optional<Seller> findById(String id) {
+    public Optional<Shop> findById(String id) {
         return this.sellerJpaMapper.findById(id);
     }
 
     @Override
-    public Seller save(Seller seller) {
+    public Shop save(Shop seller) {
         return this.sellerJpaMapper.save(seller);
     }
 }

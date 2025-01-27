@@ -1,14 +1,14 @@
 package com.dmon.sshop._application.service.product.impl;
 
-import com.dmon.sshop._infrastructure.security.ISecurityInfraHelper;
 import com.dmon.sshop._application.service.product.IProductAppService;
 import com.dmon.sshop._domain.common.base.PageRes;
 import com.dmon.sshop._domain.common.exception.AppException;
 import com.dmon.sshop._domain.common.exception.ErrorCode;
+import com.dmon.sshop._domain.product.model.entity.Product;
 import com.dmon.sshop._domain.product.model.projection.ProductProj;
 import com.dmon.sshop._domain.product.model.request.ProductReq;
-import com.dmon.sshop._domain.product.model.entity.Product;
 import com.dmon.sshop._domain.product.service.IProductDomainService;
+import com.dmon.sshop._infrastructure.security.provider.ISecurityInfraProvider;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 public class ProductAppServiceImpl implements IProductAppService {
 
     IProductDomainService productDomainService;
-    ISecurityInfraHelper securityInfraService;
+    ISecurityInfraProvider securityInfraService;
 
     //CREATE//
     @Override

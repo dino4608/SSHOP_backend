@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 public class AccountReq {
+
     @Getter
     @Setter
     @AllArgsConstructor
@@ -41,9 +42,19 @@ public class AccountReq {
     @AllArgsConstructor
     @NoArgsConstructor
     @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class Login {
+    public static class UsernameAuthenticateRequest {
         String username;
         String password;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class Oauth2AuthenticateRequest {
+        String code;
+        String oauth2Type;
     }
 
     @Getter

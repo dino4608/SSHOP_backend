@@ -2,7 +2,7 @@ package com.dmon.sshop._domain.identity.factory;
 
 import com.dmon.sshop._domain.common.exception.AppException;
 import com.dmon.sshop._domain.common.exception.ErrorCode;
-import com.dmon.sshop._domain.identity.model.entity.Seller;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
 import com.dmon.sshop._domain.identity.repository.ISellerDomainRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 public class SellerFactory {
     ISellerDomainRepository sellerDomainRepo;
 
-    public Seller findById(String id) {
-        final Seller seller = this.sellerDomainRepo.findById(id)
+    public Shop findById(String id) {
+        final Shop seller = this.sellerDomainRepo.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.SELLER__NOT_FOUND));
 
         return seller;

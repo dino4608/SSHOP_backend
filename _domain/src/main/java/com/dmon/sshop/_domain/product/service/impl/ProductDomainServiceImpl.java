@@ -2,7 +2,7 @@ package com.dmon.sshop._domain.product.service.impl;
 
 import com.dmon.sshop._domain.common.base.PageRes;
 import com.dmon.sshop._domain.common.util.AppUtil;
-import com.dmon.sshop._domain.identity.model.entity.Seller;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
 import com.dmon.sshop._domain.product.mapper.IProductMapper;
 import com.dmon.sshop._domain.product.factory.ProductFactory;
 import com.dmon.sshop._domain.product.model.entity.Product;
@@ -40,7 +40,7 @@ public class ProductDomainServiceImpl implements IProductDomainService {
     public Product create(ProductReq.Create productDto, String sellerId) {
         Product productRequested = this.productMapper.toEntity(productDto);
 
-        productRequested.setSeller(Seller.builder().id(sellerId).build());
+        productRequested.setShop(Shop.builder().id(sellerId).build());
 
         productRequested.setCategory(this.cateDomainService.findOrError(productRequested.getCategory().getId()));
 

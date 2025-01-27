@@ -2,12 +2,12 @@ package com.dmon.sshop._domain.identity.repository;
 
 import java.util.Optional;
 
-import com.dmon.sshop._domain.identity.model.entity.Seller;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
 
 public interface ISellerDomainRepository {
     // FIND//
-    Optional<Seller> findById(String id);
+    Optional<Shop> findById(String id);
 
     // PERSIST//
-    Seller save(Seller seller);
+    Shop save(Shop seller);
 }

@@ -1,16 +1,11 @@
 package com.dmon.sshop._domain.identity.model.response;
 
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Date;
+import java.util.Set;
 
 @Builder
 @Getter
@@ -33,9 +28,10 @@ public class AccountRes {
     @NoArgsConstructor
     @FieldDefaults(level = AccessLevel.PRIVATE)
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class Access {
+    public static class AccountAuthenticateResponse {
         boolean authenticated;
-        String token;
+        String accessToken;
+        AccountRes.Profile profile;
     }
 
     @Builder
@@ -48,6 +44,20 @@ public class AccountRes {
     public static class Signup {
         String id;
         String status;
+    }
+
+    @Builder
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public static class Profile {
+        String name;
+        String photo;
+        Date dob;
+        String gender;
     }
 
 }

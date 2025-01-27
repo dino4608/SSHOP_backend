@@ -30,7 +30,7 @@ public class CartController {
     @RequestMapping("/cart")
     @AllArgsConstructor
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-    public static class CartUserController {
+    public static class CartBuyerController {
 
         ICartAppService cartAppService;
 

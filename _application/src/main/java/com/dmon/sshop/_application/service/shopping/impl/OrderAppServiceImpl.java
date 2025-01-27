@@ -5,7 +5,7 @@ import com.dmon.sshop._domain.shopping.model.request.OrderCheckoutReq;
 import com.dmon.sshop._domain.shopping.model.request.OrderPlaceReq;
 import com.dmon.sshop._domain.shopping.model.response.OrderCheckoutRes;
 import com.dmon.sshop._domain.shopping.service.IOrderDomainService;
-import com.dmon.sshop._infrastructure.security.ISecurityInfraHelper;
+import com.dmon.sshop._infrastructure.security.provider.ISecurityInfraProvider;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class OrderAppServiceImpl implements IOrderAppService {
 
     IOrderDomainService orderDomainService;
-    ISecurityInfraHelper securityInfraHelper;
+    ISecurityInfraProvider securityInfraHelper;
 
     @Override
     public OrderCheckoutRes checkout(OrderCheckoutReq orderCheckoutReq) {

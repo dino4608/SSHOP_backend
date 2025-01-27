@@ -67,7 +67,7 @@ public class ProductController {
     @RequestMapping("/api/v1/product")
     @AllArgsConstructor
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-    public static class ProductUserController {
+    public static class ProductBuyerController {
         IProductAppService productAppService;
 
         //LIST//

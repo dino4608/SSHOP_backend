@@ -1,6 +1,11 @@
 package com.dmon.sshop._domain.identity.model.entity;
 
 import com.dmon.sshop._domain.common.base.BaseEntity;
+import com.dmon.sshop._domain.shopping.model.entity.Address;
+import com.dmon.sshop._domain.shopping.model.entity.Cart;
+import com.dmon.sshop._domain.shopping.model.entity.Order;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,6 +14,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,33 +30,65 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Account extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "accountId", updatable = false, nullable = false)
     String id;
 
-    @Column(nullable = false, unique = true)
-    String username;
+    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @ToString.Exclude
+    Token token;
 
-    @Column(nullable = false)
-    String password;
+    @OneToOne(mappedBy = "seller", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @ToString.Exclude
+    Shop shop;
 
-    @Column(unique = true)
-    String email;
+    @OneToOne(mappedBy = "buyer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @ToString.Exclude
+    Cart cart;
 
-    @Column(unique = true)
-    String phone;
+    @OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @ToString.Exclude
+    List<Address> addresses;
+
+    @OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ToString.Exclude
+    List<Order> orders;
+
+    String status;
 
     @Column(nullable = false)
     Set<String> roles;
 
-    //THE NESTED OBJECTS//
-    public enum RoleType {
-        ADMIN, SELLER, USER,
-    }
+    @Column(nullable = false, unique = true)
+    String username;
 
-    public enum GenderType {
-        MALE, FEMALE,
-    }
+    String password;
+
+    String email;
+
+    String phone;
+
+    String name;
+
+    String photo;
+
+    Date dob;
+
+    String gender;
+
+    //THE NESTED OBJECTS//
+    public enum RoleType {ADMIN, SELLER, BUYER,}
+
+    public enum GenderType {MALE, FEMALE,}
+
+    public enum StatusType {LACK_INFO, LIVE, DEACTIVATED, SUSPENDED, DELETED,}
 }

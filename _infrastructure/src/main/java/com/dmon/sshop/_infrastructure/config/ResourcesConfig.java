@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class ResourcesConfig implements WebMvcConfigurer {
-    @Value("${sshop.media.uri}")
+    @Value("${media.uri}")
     private String mediaUri;
 
     @Override

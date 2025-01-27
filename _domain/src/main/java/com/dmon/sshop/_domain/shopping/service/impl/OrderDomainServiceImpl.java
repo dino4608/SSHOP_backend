@@ -2,8 +2,8 @@ package com.dmon.sshop._domain.shopping.service.impl;
 
 import com.dmon.sshop._domain.common.exception.AppException;
 import com.dmon.sshop._domain.common.exception.ErrorCode;
-import com.dmon.sshop._domain.identity.model.entity.User;
-import com.dmon.sshop._domain.identity.servicev2.ISellerDomainService;
+import com.dmon.sshop._domain.identity.model.entity.Account;
+import com.dmon.sshop._domain.identity.service.IShopDomainService;
 import com.dmon.sshop._domain.product.service.ISkuDomainService;
 import com.dmon.sshop._domain.shopping.factory.OrderFactory;
 import com.dmon.sshop._domain.shopping.mapper.IOrderMapper;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OrderDomainServiceImpl implements IOrderDomainService {
 
-    ISellerDomainService sellerDomainService;
+    IShopDomainService shopDomainService;
     ISkuDomainService skuDomainService;
     IAddressDomainService addressDomainService;
     IOrderDomainRepository orderDomainRepo;
@@ -63,9 +63,9 @@ public class OrderDomainServiceImpl implements IOrderDomainService {
         orderCheckoutReq.getOrders().stream().parallel().forEach((orderReq -> {
             Order orderRequested = this.orderMapper.toEntity(orderReq);
 
-            orderRequested.setUser(User.builder().id(userId).build());
+            orderRequested.setBuyer(Account.builder().id(userId).build());
 
-            this.sellerDomainService.findOrError(orderRequested.getSeller().getId());
+            this.shopDomainService.findOrError(orderRequested.getShop().getId());
 
             ArrayList<OrderItem> itemsRequested = orderRequested.getItems().stream().parallel()
                     .peek((itemRequested) -> itemRequested.setSku(

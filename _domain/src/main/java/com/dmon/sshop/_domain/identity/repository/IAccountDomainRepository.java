@@ -1,15 +1,20 @@
 package com.dmon.sshop._domain.identity.repository;
 
+import com.dmon.sshop._domain.identity.model.entity.Account;
+
 import java.util.List;
 import java.util.Optional;
 
-import com.dmon.sshop._domain.identity.model.entity.Account;
-
 public interface IAccountDomainRepository {
+
+    void flush();
+
     // FIND//
     Optional<Account> findById(String id);
 
     Optional<Account> findByUsername(String username);
+
+    Optional<Account> findByEmail(String email);
 
     List<Account> findAll();
 

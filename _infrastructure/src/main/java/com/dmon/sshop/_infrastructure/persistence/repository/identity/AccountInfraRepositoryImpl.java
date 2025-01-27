@@ -20,6 +20,11 @@ public class AccountInfraRepositoryImpl implements IAccountDomainRepository {
     IAccountJpaMapper accountJpaMapper;
 
     @Override
+    public void flush() {
+        this.accountJpaMapper.flush();
+    }
+
+    @Override
     public Optional<Account> findById(String id) {
         return this.accountJpaMapper.findById(id);
     }
@@ -27,6 +32,11 @@ public class AccountInfraRepositoryImpl implements IAccountDomainRepository {
     @Override
     public Optional<Account> findByUsername(String username) {
         return this.accountJpaMapper.findByUsername(username);
+    }
+
+    @Override
+    public Optional<Account> findByEmail(String email) {
+        return this.accountJpaMapper.findByEmail(email);
     }
 
     @Override

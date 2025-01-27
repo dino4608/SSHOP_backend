@@ -58,7 +58,7 @@ public class MediaController {
     @RequestMapping("/api/v1/media")
     @RequiredArgsConstructor
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-    public static class MediaUserController {
+    public static class MediaBuyerController {
         IMediaAppService mediaAppService;
 
         //UPLOAD//

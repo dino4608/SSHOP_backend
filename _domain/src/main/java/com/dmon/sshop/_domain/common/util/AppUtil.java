@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -52,7 +51,7 @@ public class AppUtil {
         return PageRes.<T>builder()
                 .totalPages(pageJpa.getTotalPages())
                 .totalElements(pageJpa.getTotalElements())
-                .page(pageJpa.getNumber() + 1) //Page of client starts 1. But PageNumber of Jpa starts from 0
+                .page(pageJpa.getNumber() + 1) // Page of client starts 1. But PageNumber of Jpa starts from 0
                 .size(pageJpa.getSize())
                 .content(pageJpa.getContent())
                 .build();
@@ -69,13 +68,16 @@ public class AppUtil {
      */
     public static Pageable toPageable(int page, int size, String sort, String direct) {
         Sort.Direction direction = direct.equalsIgnoreCase("ASC")
-                ? Sort.Direction.ASC : Sort.Direction.DESC;
+                ? Sort.Direction.ASC
+                : Sort.Direction.DESC;
 
-        return PageRequest.of(--page, size, direction, sort); //Page of client starts 1. But PageNumber of Jpa starts from 0
+        return PageRequest.of(--page, size, direction, sort); // Page of client starts 1. But PageNumber of Jpa starts
+                                                              // from 0
     }
 
     public static Pageable toPageable(PageReq pageReq) {
-        Pageable pageable = AppUtil.toPageable(pageReq.getPage(), pageReq.getSize(), pageReq.getSort(), pageReq.getDirect());
+        Pageable pageable = AppUtil.toPageable(pageReq.getPage(), pageReq.getSize(), pageReq.getSort(),
+                pageReq.getDirect());
         return pageable;
     }
 
@@ -87,22 +89,22 @@ public class AppUtil {
      * @throws IllegalAccessException when can not access any fields
      */
     public static <T> void updateNonNull(T target, T source) {
-        //Get fields (attributes) of source or target
+        // Get fields (attributes) of source or target
         Field[] fields = source.getClass().getDeclaredFields();
 
-        //Iterate through fields
+        // Iterate through fields
         Arrays.stream(fields).parallel()
-                .peek(field -> field.setAccessible(true))  //Allow to access the private fields
+                .peek(field -> field.setAccessible(true)) // Allow to access the private fields
                 .filter(field -> {
                     try {
-                        return field.get(source) != null; //Select non-null fields
+                        return field.get(source) != null; // Select non-null fields
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
                 })
                 .forEach(field -> {
                     try {
-                        field.set(target, field.get(source)); //Map source to target
+                        field.set(target, field.get(source)); // Map source to target
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }

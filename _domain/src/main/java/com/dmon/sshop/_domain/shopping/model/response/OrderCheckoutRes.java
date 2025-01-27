@@ -14,8 +14,8 @@ import java.util.ArrayList;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderCheckoutRes {
 
-    ArrayList<Order> orders = new ArrayList<>();
-    SummaryRes summary = new SummaryRes();
+    ArrayList<Order> orders;
+    SummaryRes summary;
 
     @Getter
     @Setter
@@ -25,10 +25,19 @@ public class OrderCheckoutRes {
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class SummaryRes {
 
+        @Builder.Default
         float subtotal = 0;
+
+        @Builder.Default
         float shippingFee = 0;
+
+        @Builder.Default
         float discount = 0;
+
+        @Builder.Default
         float shippingDiscount = 0;
+
+        @Builder.Default
         float total = 0;
     }
 
