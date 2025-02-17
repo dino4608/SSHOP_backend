@@ -23,12 +23,12 @@ import org.springframework.stereotype.Service;
 public class ProductAppServiceImpl implements IProductAppService {
 
     IProductDomainService productDomainService;
-    ISecurityInfraProvider securityInfraService;
+    ISecurityInfraProvider securityInfraProvider;
 
     //CREATE//
     @Override
     public Product create(ProductReq.Create productDto) {
-        return this.productDomainService.create(productDto, this.securityInfraService.getAccountId());
+        return this.productDomainService.create(productDto, this.securityInfraProvider.getAccountId());
     }
 
     //LIST//

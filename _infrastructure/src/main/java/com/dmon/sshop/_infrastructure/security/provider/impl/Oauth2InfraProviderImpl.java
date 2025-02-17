@@ -6,9 +6,9 @@ import com.dmon.sshop._domain.identity.model.entity.Account;
 import com.dmon.sshop._infrastructure.security.httpclient.GoogleTokenClient;
 import com.dmon.sshop._infrastructure.security.httpclient.GoogleUserClient;
 import com.dmon.sshop._infrastructure.security.model.enums.Oauth2Type;
-import com.dmon.sshop._infrastructure.security.model.request.ExchangeTokenReq;
-import com.dmon.sshop._infrastructure.security.model.response.ExchangeTokenRes;
-import com.dmon.sshop._infrastructure.security.model.response.GoogleUserInfoRes;
+import com.dmon.sshop._infrastructure.security.model.request.ExchangeTokenRequest;
+import com.dmon.sshop._infrastructure.security.model.response.ExchangeTokenResponse;
+import com.dmon.sshop._infrastructure.security.model.response.GoogleUserInfoResponse;
 import com.dmon.sshop._infrastructure.security.provider.IOauth2InfraProvider;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -44,11 +44,11 @@ public class Oauth2InfraProviderImpl implements IOauth2InfraProvider {
     protected String GRANT_TYPE;
 
     @Override
-    public ExchangeTokenRes exchangeToken(String code, Oauth2Type oauth2Type) {
-        ExchangeTokenRes exchangeTokenRes;
+    public ExchangeTokenResponse exchangeToken(String code, Oauth2Type oauth2Type) {
+        ExchangeTokenResponse exchangeTokenResponse;
 
         try {
-            exchangeTokenRes = this.googleTokenClient.exchangeToken(ExchangeTokenReq.builder()
+            exchangeTokenResponse = this.googleTokenClient.exchangeToken(ExchangeTokenRequest.builder()
                     .code(code)
                     .clientId(this.CLIENT_ID)
                     .clientSecret(this.CLIENT_SECRET)
@@ -59,23 +59,23 @@ public class Oauth2InfraProviderImpl implements IOauth2InfraProvider {
             throw new AppException(ErrorCode.OAUTH2__EXCHANGE_TOKEN_FAILED);
         }
 
-        return exchangeTokenRes;
+        return exchangeTokenResponse;
     }
 
     @Override
     public Account getUserInfo(String accessToken, Oauth2Type oauth2Type) {
-        GoogleUserInfoRes googleUserInfoRes;
+        GoogleUserInfoResponse googleUserInfoResponse;
 
         try {
-            googleUserInfoRes = this.googleUserClient.getUserInfo("json", accessToken);
+            googleUserInfoResponse = this.googleUserClient.getUserInfo("json", accessToken);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new AppException(ErrorCode.OAUTH2__GET_USERINFO_FAILED);
         }
 
         return Account.builder()
-                .email(googleUserInfoRes.getEmail())
-                .name(googleUserInfoRes.getName())
+                .email(googleUserInfoResponse.getEmail())
+                .name(googleUserInfoResponse.getName())
                 .build();
     }
 }

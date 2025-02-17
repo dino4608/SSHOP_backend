@@ -26,13 +26,13 @@ public class AppInitConfig {
     ApplicationRunner applicationRunner(
             IAccountDomainRepository accountDomainRepo,
             ITokenDomainRepository tokenDomainRepo,
-            ISecurityInfraProvider securityInfraService
+            ISecurityInfraProvider securityInfraProvider
     ) {
         return args -> {
             if (accountDomainRepo.findByUsername("admin").isEmpty()) {
                 //todo: use the ddd factory
                 HashSet<String> roles = new HashSet<>(Collections.singletonList(Account.RoleType.ADMIN.name()));
-                String password = securityInfraService.hashPassword("123456");
+                String password = securityInfraProvider.hashPassword("123456");
 
                 Account account = Account.builder()
                         .username("admin")

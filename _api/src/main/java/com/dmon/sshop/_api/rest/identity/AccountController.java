@@ -1,14 +1,16 @@
 package com.dmon.sshop._api.rest.identity;
 
 import com.dmon.sshop._application.service.identity.IAccountAppService;
+import com.dmon.sshop._domain.common.exception.AppException;
+import com.dmon.sshop._domain.common.exception.ErrorCode;
 import com.dmon.sshop._domain.identity.model.entity.Account;
-import com.dmon.sshop._domain.identity.model.request.AccountReq;
-import com.dmon.sshop._domain.identity.model.response.AccountRes;
-import jakarta.validation.Valid;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
+import com.dmon.sshop._domain.identity.model.request.AccountSettleRequest;
+import com.dmon.sshop._domain.identity.model.request.ShopSettleRequest;
+import com.dmon.sshop._domain.identity.model.response.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,73 +29,24 @@ public class AccountController {
 
         IAccountAppService accountAppService;
 
-        //PROFILE// todo p4: change
-        @GetMapping("/profile/get")
-        public ResponseEntity<Object> getProfile() {
-            return ResponseEntity
-                    .ok()
-                    .body(this.accountAppService.getProfile());
-        }
-
-        //CONTACT// todo p4: get
-
-        //PASSWORD// todo p4: change
-
-        //USERNAME// todo p4: change
-
-        //CREATE//
-        @PostMapping("/create")
-        public ResponseEntity<AccountRes> createOne(
-                @Valid @RequestBody AccountReq.Create body
-        ) {
-            return ResponseEntity
-                    .ok()
-                    .body(this.accountAppService.createOne(body));
+        //INFO//
+        @GetMapping("/info/get")
+        public ResponseEntity<AccountInfoResponse> getInfo() {
+            return ResponseEntity.ok()
+                    .body(this.accountAppService.getAccountInfo());
         }
 
         //READ//
         @GetMapping("/list")
         public ResponseEntity<List<Account>> listAll() {
-            return ResponseEntity
-                    .ok()
+            return ResponseEntity.ok()
                     .body(this.accountAppService.listAll());
         }
 
         @GetMapping("/find/{accountId}")
-        public ResponseEntity<AccountRes> findOne(
-                @PathVariable("accountId") String accountId
-        ) {
-            return ResponseEntity
-                    .ok()
-                    .body(this.accountAppService.findOne(accountId));
-        }
-
-        @GetMapping("/my")
-        public ResponseEntity<AccountRes> findMyOne() {
-            return ResponseEntity
-                    .ok()
-                    .body(this.accountAppService.findMyOne());
-        }
-
-        //UPDATE//
-        @PatchMapping("/update/{accountId}")
-        public ResponseEntity<AccountRes> updateOne(
-                @PathVariable("accountId") String accountId,
-                @RequestBody AccountReq.Update body
-        ) {
-            return ResponseEntity
-                    .ok()
-                    .body(this.accountAppService.updateOne(accountId, body));
-        }
-
-        //DELETE//
-        @DeleteMapping("/delete/{id}")
-        public ResponseEntity<Void> deleteOne(
-                @PathVariable("id") String accountId
-        ) {
-            return ResponseEntity
-                    .status(HttpStatus.NO_CONTENT)
-                    .body(this.accountAppService.deleteOne(accountId));
+        public ResponseEntity<Account> getOne(@PathVariable("accountId") String accountId) {
+            return ResponseEntity.ok()
+                    .body(this.accountAppService.getOne(accountId));
         }
     }
 
@@ -107,12 +60,36 @@ public class AccountController {
 
         IAccountAppService accountAppService;
 
-        //PROFILE//
-        @GetMapping("/profile/get")
-        public ResponseEntity<Object> getProfile() {
-            return ResponseEntity
-                    .ok()
-                    .body(this.accountAppService.getProfile());
+        //INFO//
+        @GetMapping("/info/get")
+        public ResponseEntity<ShopInfoResponse> getInfo() {
+            return ResponseEntity.ok()
+                    .body(this.accountAppService.getShopInfo());
+        }
+
+        @GetMapping("/login/get")
+        public ResponseEntity<LoginInfoResponse> getLogin() {
+            return ResponseEntity.ok()
+                    .body(this.accountAppService.getLoginInfo());
+        }
+
+        @GetMapping("/contact/get")
+        public ResponseEntity<ContactInfoResponse> getContact() {
+            return ResponseEntity.ok()
+                    .body(this.accountAppService.getContactInfo());
+        }
+
+        @GetMapping("/citizen/get")
+        public ResponseEntity<CitizenInfoResponse> getCitizen() {
+            return ResponseEntity.ok()
+                    .body(this.accountAppService.getCitizenInfo());
+        }
+
+        //SETTLE//
+        @PostMapping("/info/settle")
+        public ResponseEntity<Shop> settleInfo(@RequestBody ShopSettleRequest request) {
+            return ResponseEntity.ok()
+                    .body(this.accountAppService.settleShopInfo(request));
         }
 
     }
@@ -127,20 +104,40 @@ public class AccountController {
 
         IAccountAppService accountAppService;
 
-        //PROFILE//
-        @GetMapping("/profile/get")
-        public ResponseEntity<Object> getProfile() {
+        //INFO//
+        @GetMapping("/info/get")
+        public ResponseEntity<AccountInfoResponse> getInfo() {
             return ResponseEntity.ok()
-                    .body(this.accountAppService.getProfile());
+                    .body(this.accountAppService.getAccountInfo());
+        }
+
+        @GetMapping("/login/get")
+        public ResponseEntity<LoginInfoResponse> getLogin() {
+            return ResponseEntity.ok()
+                    .body(this.accountAppService.getLoginInfo());
+        }
+
+        //SETTLE//
+        @PostMapping("/info/settle")
+        public ResponseEntity<Account> settleInfo(@RequestBody AccountSettleRequest request) {
+            return ResponseEntity.ok()
+                    .body(this.accountAppService.settleAccountInfo(request));
         }
 
         @PostMapping("/info/update")
-        @PreAuthorize("hasRole('BUYER')")
-        public ResponseEntity<Object> updateProfile(Object request) {
-            return ResponseEntity.ok()
-                    .body(this.accountAppService.updateProfile(request));
+        public ResponseEntity<Void> updateInfo(Object request) {
+            throw new AppException(ErrorCode.SYSTEM__DEVELOPING_FEATURE);
         }
 
+        @PostMapping("/username/update")
+        public ResponseEntity<Void> updateUsername(Object request) {
+            throw new AppException(ErrorCode.SYSTEM__DEVELOPING_FEATURE);
+        }
+
+        @PostMapping("/password/update")
+        public ResponseEntity<Void> updatePassword(Object request) {
+            throw new AppException(ErrorCode.SYSTEM__DEVELOPING_FEATURE);
+        }
     }
 
 

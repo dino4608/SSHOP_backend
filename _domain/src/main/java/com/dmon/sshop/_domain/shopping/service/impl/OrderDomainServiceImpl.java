@@ -65,7 +65,7 @@ public class OrderDomainServiceImpl implements IOrderDomainService {
 
             orderRequested.setBuyer(Account.builder().id(userId).build());
 
-            this.shopDomainService.findOrError(orderRequested.getShop().getId());
+            this.shopDomainService.getByIdOrError(orderRequested.getShop().getId());
 
             ArrayList<OrderItem> itemsRequested = orderRequested.getItems().stream().parallel()
                     .peek((itemRequested) -> itemRequested.setSku(
@@ -127,7 +127,6 @@ public class OrderDomainServiceImpl implements IOrderDomainService {
 
             OrderFactory.createOrder(orderRequested, Order.StatusType.UNPAID);
         });
-
 
 
         //remove cart item

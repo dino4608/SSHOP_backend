@@ -10,7 +10,7 @@
 			"name": "Admin center",
 			"item": [
 				{
-					"name": "System group",
+					"name": "System domain",
 					"item": [
 						{
 							"name": "Media: upload a file",
@@ -39,11 +39,14 @@
 					]
 				},
 				{
-					"name": "Identity group",
+					"name": "Identity domain",
 					"item": [
 						{
-							"name": "Access: log in",
+							"name": "Access: login via username",
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -55,20 +58,26 @@
 										}
 									}
 								},
-								"url": "{{admin}}/{{access}}/login"
+								"url": "{{admin}}/{{access}}/login/username"
 							},
 							"response": []
 						},
 						{
-							"name": "Access: log out",
+							"name": "Access: refresh",
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": {
-										"token": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzc2hvcC5kbW9uLmNvbSIsInN1YiI6IjU5ZWE2MDJlLWY2MDMtNDNiMy04M2U4LWFjMDQ5YTgwNjkyZCIsImV4cCI6MTc2OTY5NDEwMCwiaWF0IjoxNzM1MTM0MTAwLCJzY29wZSI6IkFETUlOIn0.TZMZrifoTXng2MlYs7Qwhp4zsqZfX7FMmfz1Ss3Xvv9p9MlbhhFGJGuzlxxgrqmD9DrUnKsXpJB_JQFs-9hMCA"
-									}
-								},
-								"method": "POST",
+								"method": "GET",
+								"header": [],
+								"url": "{{admin}}/{{access}}/refresh"
+							},
+							"response": []
+						},
+						{
+							"name": "Access: logout",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",
@@ -79,43 +88,16 @@
 										}
 									}
 								},
-								"url": "http://localhost:8044/sshop/admin/api/v1/access/logout"
+								"url": "{{admin}}/{{access}}/logout"
 							},
 							"response": []
 						},
 						{
-							"name": "Account: create one",
+							"name": "Account: get info",
 							"request": {
-								"method": "POST",
+								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"user1\",\r\n    \"email\": \"user1@gmail.com\",\r\n    \"phone\": \"0985554601\",\r\n    \"password\": \"123456\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "http://localhost:8044/sshop/api/v1/accounts/create"
-							},
-							"response": []
-						},
-						{
-							"name": "Account: update one",
-							"request": {
-								"method": "PATCH",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"email\": \"update@gmail.com\",\r\n    \"phone\": \"0985509091\",\r\n    \"password\": \"123456\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "http://localhost:8044/sshop/api/v1/accounts/update/c47c9570-98d5-4fb0-ba29-9e09adf09d89"
+								"url": "{{admin}}/{{account}}/info/get"
 							},
 							"response": []
 						},
@@ -136,7 +118,7 @@
 										}
 									}
 								},
-								"url": "http://localhost:8044/sshop/admin/api/v1/account/list"
+								"url": "{{admin}}/{{account}}/list"
 							},
 							"response": []
 						},
@@ -182,21 +164,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Account: get my account",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": {
-										"token": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzc2hvcC5kbW9uLmNvbSIsInN1YiI6ImVjOWI2NWVhLTY3OTAtNDMwNC05OTlhLWJlY2QzZjgxNGNhZCIsImV4cCI6MTc2ODYzMjY0NSwiaWF0IjoxNzM0MDcyNjQ1LCJzY29wZSI6IkFETUlOIn0.1rxppDQwAaGHcC-Y6j5skTz_UymkbEu7cOt-wRy1WJgL6SwS3kIsoj3CXR0gtf8STMdQlOmqQPJuWQCrnhXlpw"
-									}
-								},
-								"method": "GET",
-								"header": [],
-								"url": "http://localhost:8044/sshop/admin/api/v1/account/my"
-							},
-							"response": []
 						}
 					],
 					"event": [
@@ -223,7 +190,7 @@
 					]
 				},
 				{
-					"name": "Product group",
+					"name": "Product domain",
 					"item": [
 						{
 							"name": "Category: create",
@@ -394,7 +361,7 @@
 			"auth": {
 				"type": "bearer",
 				"bearer": {
-					"token": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzc2hvcC5kbW9uLmNvbSIsInN1YiI6IjU5ZWE2MDJlLWY2MDMtNDNiMy04M2U4LWFjMDQ5YTgwNjkyZCIsImV4cCI6MTc3MTI0MjkyNSwiaWF0IjoxNzM2NjgyOTI1LCJzY29wZSI6IkFETUlOIn0.doqEeldF3MQbwglD5s4HPyYUNTsC5c_varmznRFbQl_tlvspr-DZkhz52owzs326qr07WyvATDm1qrz4_wOC7g"
+					"token": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzc2hvcC5kaW5vLmNvbSIsInN1YiI6ImNlYjNlYjVjLTI0NTctNDEwZC05NzY0LTM0MmFkODQ1NWI5NyIsImV4cCI6MTczOTg4MTY3OSwiaWF0IjoxNzM5Nzk1Mjc5LCJzY29wZSI6IkFETUlOIn0.6178ppCVb56Kr6BvfEE3EGXWtHslgOmgTIQ4Sq-IQYTrwzWN0r3lPR1S_POpHjObJGwXCy3lHbpcchCXMVXdgQ"
 				}
 			},
 			"event": [
@@ -424,7 +391,7 @@
 			"name": "Seller center",
 			"item": [
 				{
-					"name": "System group",
+					"name": "System domain",
 					"item": [
 						{
 							"name": "Media: upload a file",
@@ -453,10 +420,10 @@
 					]
 				},
 				{
-					"name": "Identity group",
+					"name": "Identity domain",
 					"item": [
 						{
-							"name": "Access: log in",
+							"name": "Access: login via username",
 							"request": {
 								"auth": {
 									"type": "noauth"
@@ -465,57 +432,208 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"seller1\",\r\n    \"password\": \"123456\"\r\n}",
+									"raw": "{\r\n    \"username\": \"dinoshop1\",\r\n    \"password\": \"123456\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "http://localhost:8044/sshop/seller/api/v1/access/login"
+								"url": "{{seller}}/{{access}}/login/username"
 							},
 							"response": []
 						},
 						{
-							"name": "Access: log out",
+							"name": "Access: login via oauth2 Copy",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{seller}}/{{access}}/login/oauth2?code=4%2F0ASVgi3IbCo9fJGWqwV5kyJaKlE17Jtqqa5NFzEmpQn50lhnx055TDQq6Qg5mo97MJtn4Vw&auth2=GOOGLE",
+									"host": [
+										"{{seller}}"
+									],
+									"path": [
+										"{{access}}",
+										"login",
+										"oauth2"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "4%2F0ASVgi3IbCo9fJGWqwV5kyJaKlE17Jtqqa5NFzEmpQn50lhnx055TDQq6Qg5mo97MJtn4Vw"
+										},
+										{
+											"key": "auth2",
+											"value": "GOOGLE"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Access: signup via username",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"dinohere1\",\r\n    \"password\": \"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{seller}}/{{access}}/signup/username"
+							},
+							"response": []
+						},
+						{
+							"name": "Access: signup via oauth2",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{seller}}/{{access}}/signup/oauth2?code=4%2F0ASVgi3IbCo9fJGWqwV5kyJaKlE17Jtqqa5NFzEmpQn50lhnx055TDQq6Qg5mo97MJtn4Vw&auth2=GOOGLE",
+									"host": [
+										"{{seller}}"
+									],
+									"path": [
+										"{{access}}",
+										"signup",
+										"oauth2"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "4%2F0ASVgi3IbCo9fJGWqwV5kyJaKlE17Jtqqa5NFzEmpQn50lhnx055TDQq6Qg5mo97MJtn4Vw"
+										},
+										{
+											"key": "auth2",
+											"value": "GOOGLE"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Access: refresh",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{seller}}/{{access}}/refresh"
+							},
+							"response": []
+						},
+						{
+							"name": "Access: logout",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{seller}}/{{access}}/logout"
+							},
+							"response": []
+						},
+						{
+							"name": "Account: get info",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{seller}}/{{account}}/info/get"
+							},
+							"response": []
+						},
+						{
+							"name": "Account: get login",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{seller}}/{{account}}/login/get"
+							},
+							"response": []
+						},
+						{
+							"name": "Account: get contact",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{seller}}/{{account}}/contact/get"
+							},
+							"response": []
+						},
+						{
+							"name": "Account: get citizen",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{seller}}/{{account}}/citizen/get"
+							},
+							"response": []
+						},
+						{
+							"name": "Account: settle info",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"user1\",\r\n    \"password\": \"123456\"\r\n}",
+									"raw": "{\r\n    \"dob\": \"2003-8-9\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "http://localhost:8044/sshop/seller/api/v1/access/logout"
-							},
-							"response": []
-						},
-						{
-							"name": "Access: sign up",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"user1\",\r\n    \"password\": \"123456\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "http://localhost:8044/sshop/seller/api/v1/access/signup"
+								"url": "{{seller}}/{{account}}/info/settle"
 							},
 							"response": []
 						}
 					]
 				},
 				{
-					"name": "Product group",
+					"name": "Product domain",
 					"item": [
 						{
 							"name": "Category: list as tree",
@@ -594,7 +712,7 @@
 			"auth": {
 				"type": "bearer",
 				"bearer": {
-					"token": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzc2hvcC5kbW9uLmNvbSIsInN1YiI6ImNhMDY2ODI4LTczNWEtNDdjZC1hNWM5LTk2NDMxMWM5YzY0MSIsImV4cCI6MTc3MTMwNDgwNiwiaWF0IjoxNzM2NzQ0ODA2LCJzY29wZSI6IlNFTExFUiJ9.puGc6gdmrr5vEbOh5tOBJ1yd2JjTPxC6VbuG3i9utNL8IZ2vloPjTb64Xr77alMtajfTH8PkVh6ePX_OsDmEww"
+					"token": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzc2hvcC5kaW5vLmNvbSIsInN1YiI6IjlhNmQyMDEwLTExODQtNDI5ZS05YjFiLTVhNjY5NjM5NDgxOSIsImV4cCI6MTczOTg4MTc2MiwiaWF0IjoxNzM5Nzk1MzYyLCJzY29wZSI6IlNFTExFUiJ9.OF1FUVANxXlvx-wb_s5lFE2ie86_oO8OVN-2APKsBGuDKLFmTTu5aUDaQ89phbWX9gUHqCHzu8czNktJdiFp1g"
 				}
 			},
 			"event": [
@@ -624,7 +742,7 @@
 			"name": "Buyer center",
 			"item": [
 				{
-					"name": "System group",
+					"name": "System domain",
 					"item": [
 						{
 							"name": "Media: upload a file",
@@ -653,30 +771,229 @@
 					]
 				},
 				{
-					"name": "Identity group",
+					"name": "Identity domain",
 					"item": [
 						{
-							"name": "Access: log in",
+							"name": "Access: login via username",
 							"request": {
+								"auth": {
+									"type": "noauth"
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"123456\"\r\n}",
+									"raw": "{\r\n    \"username\": \"dinohere2\",\r\n    \"password\": \"123456\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{buyer}}/{{access}}/login"
+								"url": "{{buyer}}/{{access}}/login/username"
+							},
+							"response": []
+						},
+						{
+							"name": "Access: login via oauth2",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{buyer}}/{{access}}/login/oauth2?code=4%2F0ASVgi3IbCo9fJGWqwV5kyJaKlE17Jtqqa5NFzEmpQn50lhnx055TDQq6Qg5mo97MJtn4Vw&auth2=GOOGLE",
+									"host": [
+										"{{buyer}}"
+									],
+									"path": [
+										"{{access}}",
+										"login",
+										"oauth2"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "4%2F0ASVgi3IbCo9fJGWqwV5kyJaKlE17Jtqqa5NFzEmpQn50lhnx055TDQq6Qg5mo97MJtn4Vw"
+										},
+										{
+											"key": "auth2",
+											"value": "GOOGLE"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Access: signup via username",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"dinoshop1\",\r\n    \"password\": \"123456\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{buyer}}/{{access}}/signup/username"
+							},
+							"response": []
+						},
+						{
+							"name": "Access: signup via oauth2",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{buyer}}/{{access}}/signup/oauth2?code=4%2F0ASVgi3IbCo9fJGWqwV5kyJaKlE17Jtqqa5NFzEmpQn50lhnx055TDQq6Qg5mo97MJtn4Vw&auth2=GOOGLE",
+									"host": [
+										"{{buyer}}"
+									],
+									"path": [
+										"{{access}}",
+										"signup",
+										"oauth2"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "4%2F0ASVgi3IbCo9fJGWqwV5kyJaKlE17Jtqqa5NFzEmpQn50lhnx055TDQq6Qg5mo97MJtn4Vw"
+										},
+										{
+											"key": "auth2",
+											"value": "GOOGLE"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Access: refresh",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{buyer}}/{{access}}/refresh"
+							},
+							"response": []
+						},
+						{
+							"name": "Access: logout",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{buyer}}/{{access}}/logout"
+							},
+							"response": []
+						},
+						{
+							"name": "Account: get info",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{buyer}}/{{account}}/info/get"
+							},
+							"response": []
+						},
+						{
+							"name": "Account: get login",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{buyer}}/{{account}}/login/get"
+							},
+							"response": []
+						},
+						{
+							"name": "Account: settle info",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dob\": \"2003-05-05\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{buyer}}/{{account}}/info/settle"
+							},
+							"response": []
+						},
+						{
+							"name": "Account: update info",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "{{buyer}}/{{account}}/info/update"
+							},
+							"response": []
+						},
+						{
+							"name": "Account: update info Copy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "{{buyer}}/{{account}}/info/update"
+							},
+							"response": []
+						},
+						{
+							"name": "Account: update password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "{{buyer}}/{{account}}/password/update"
 							},
 							"response": []
 						}
 					]
 				},
 				{
-					"name": "Product group",
+					"name": "Product domain",
 					"item": [
 						{
 							"name": "Category: list as tree",
@@ -688,6 +1005,34 @@
 							"response": []
 						}
 					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": {
+					"token": "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzc2hvcC5kaW5vLmNvbSIsInN1YiI6ImNlMGExNzQ5LThlNzctNDMwOS05MjllLWEzZGZmZTBjMDZhNiIsImV4cCI6MTczOTg4Njk1NywiaWF0IjoxNzM5ODAwNTU3LCJzY29wZSI6IkJVWUVSIn0.ZPL8dohRRmUbzLEohdggCCS-w-f6l8gHsgbXTqgn_OSlhzTF-1ei0bDqH3W91adeaJ4v6I0bbUDjh9XuS1-cTQ"
+				}
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}

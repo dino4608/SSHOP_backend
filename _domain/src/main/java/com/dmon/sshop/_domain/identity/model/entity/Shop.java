@@ -66,4 +66,6 @@ public class Shop extends BaseEntity {
 
     //THE NESTED OBJECTS//
     public enum StatusType {LACK_INFO, REVIEWING, LIVE, DEACTIVATED, SUSPENDED, CLOSED, DELETED,}
+
+    public enum BusinessType {INDIVIDUAL, HOUSEHOLD, ENTERPRISE}
 }

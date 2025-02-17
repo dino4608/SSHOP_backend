@@ -3,10 +3,10 @@ package com.dmon.sshop._api.rest.product;
 import com.dmon.sshop._application.service.product.ICategoryAppService;
 import com.dmon.sshop._domain.common.base.PageReq;
 import com.dmon.sshop._domain.common.base.PageRes;
-import com.dmon.sshop._domain.common.util.AppUtil;
+import com.dmon.sshop._domain.common.util.AppUtils;
+import com.dmon.sshop._domain.product.model.entity.Category;
 import com.dmon.sshop._domain.product.model.projection.CategoryProj;
 import com.dmon.sshop._domain.product.model.request.CategoryReq;
-import com.dmon.sshop._domain.product.model.entity.Category;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -30,8 +30,7 @@ public class CategoryController {
         //CREATE//
         @PostMapping("/create")
         public ResponseEntity<Category> create(
-                @RequestBody @Valid CategoryReq.Create cateDto)
-        {
+                @RequestBody @Valid CategoryReq.Create cateDto) {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(categoryAppService.create(cateDto));
@@ -41,9 +40,8 @@ public class CategoryController {
         @PatchMapping("/update/{cateId}")
         public ResponseEntity<Category> update(
                 @RequestBody @Valid CategoryReq.Update cateDto,
-                @PathVariable("cateId") String cateId)
-        {
-            return  ResponseEntity
+                @PathVariable("cateId") String cateId) {
+            return ResponseEntity
                     .ok()
                     .body(this.categoryAppService.update(cateDto, cateId));
         }
@@ -59,7 +57,7 @@ public class CategoryController {
             pageReq.setDirect(direct);
             return ResponseEntity
                     .ok()
-                    .body(this.categoryAppService.findAll(AppUtil.toPageable(pageReq)));
+                    .body(this.categoryAppService.findAll(AppUtils.toPageable(pageReq)));
         }
 
         //FIND//

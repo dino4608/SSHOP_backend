@@ -1,8 +1,8 @@
 package com.dmon.sshop._infrastructure.persistence.repository.identity;
 
 import com.dmon.sshop._domain.identity.model.entity.Shop;
-import com.dmon.sshop._domain.identity.repository.ISellerDomainRepository;
-import com.dmon.sshop._infrastructure.persistence.jpa.identity.ISellerJpaMapper;
+import com.dmon.sshop._domain.identity.repository.IShopDomainRepository;
+import com.dmon.sshop._infrastructure.persistence.jpa.identity.IShopJpaMapper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,16 +15,17 @@ import java.util.Optional;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-public class SellerInfraRepositoryImpl implements ISellerDomainRepository {
-    ISellerJpaMapper sellerJpaMapper;
+public class ShopInfraRepositoryImpl implements IShopDomainRepository {
+
+    IShopJpaMapper shopJpaMapper;
 
     @Override
     public Optional<Shop> findById(String id) {
-        return this.sellerJpaMapper.findById(id);
+        return this.shopJpaMapper.findById(id);
     }
 
     @Override
     public Shop save(Shop seller) {
-        return this.sellerJpaMapper.save(seller);
+        return this.shopJpaMapper.save(seller);
     }
 }

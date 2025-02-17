@@ -11,9 +11,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AuthenticationResponse {
-    boolean authenticated;
-    String accessToken;
-    AccountInfoResponse accountInfo;
-    ShopInfoResponse shopInfo;
+public class CitizenInfoResponse {
+    String maskedCard;
+    String maskedName;
+    String dob;
 }

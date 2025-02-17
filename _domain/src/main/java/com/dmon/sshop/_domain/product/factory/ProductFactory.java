@@ -1,9 +1,9 @@
 package com.dmon.sshop._domain.product.factory;
 
-import com.dmon.sshop._domain.common.util.AppUtil;
+import com.dmon.sshop._domain.common.util.AppUtils;
 import com.dmon.sshop._domain.inventory.factory.SkuFactory;
-import com.dmon.sshop._domain.product.model.entity.Product;
 import com.dmon.sshop._domain.inventory.model.entity.Sku;
+import com.dmon.sshop._domain.product.model.entity.Product;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -47,7 +47,7 @@ public class ProductFactory {
     }
 
     public String genSlug(String name) {
-        String slug = AppUtil.toSlug(name);
+        String slug = AppUtils.toSlug(name);
 
         return slug;
     }

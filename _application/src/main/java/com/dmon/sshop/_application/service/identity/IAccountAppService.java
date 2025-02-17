@@ -1,29 +1,30 @@
 package com.dmon.sshop._application.service.identity;
 
 import com.dmon.sshop._domain.identity.model.entity.Account;
-import com.dmon.sshop._domain.identity.model.request.AccountReq;
-import com.dmon.sshop._domain.identity.model.response.AccountRes;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
+import com.dmon.sshop._domain.identity.model.request.AccountSettleRequest;
+import com.dmon.sshop._domain.identity.model.request.ShopSettleRequest;
+import com.dmon.sshop._domain.identity.model.response.*;
 
 import java.util.List;
 
 public interface IAccountAppService {
 
-    //PROFILE//
-    Account getProfile();
+    AccountInfoResponse getAccountInfo();
 
-    AccountRes createOne(AccountReq.Create accountDto);
+    ShopInfoResponse getShopInfo();
 
-    Account preparePreCreate(AccountReq.Create accountDto, Account.RoleType roleType);
+    ContactInfoResponse getContactInfo();
 
-    AccountRes updateOne(String accountId, AccountReq.Update body);
+    LoginInfoResponse getLoginInfo();
 
-    Void deleteOne(String accountId);
+    CitizenInfoResponse getCitizenInfo();
+
+    Account getOne(String accountId);
 
     List<Account> listAll();
 
-    AccountRes findOne(String accountId);
+    Account settleAccountInfo(AccountSettleRequest request);
 
-    AccountRes findMyOne();
-
-    Object updateProfile(Object request);
+    Shop settleShopInfo(ShopSettleRequest request);
 }

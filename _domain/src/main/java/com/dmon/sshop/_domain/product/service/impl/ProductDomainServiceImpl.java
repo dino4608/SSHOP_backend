@@ -1,10 +1,10 @@
 package com.dmon.sshop._domain.product.service.impl;
 
 import com.dmon.sshop._domain.common.base.PageRes;
-import com.dmon.sshop._domain.common.util.AppUtil;
+import com.dmon.sshop._domain.common.util.AppUtils;
 import com.dmon.sshop._domain.identity.model.entity.Shop;
-import com.dmon.sshop._domain.product.mapper.IProductMapper;
 import com.dmon.sshop._domain.product.factory.ProductFactory;
+import com.dmon.sshop._domain.product.mapper.IProductMapper;
 import com.dmon.sshop._domain.product.model.entity.Product;
 import com.dmon.sshop._domain.product.model.projection.ProductProj;
 import com.dmon.sshop._domain.product.model.request.ProductReq;
@@ -46,7 +46,7 @@ public class ProductDomainServiceImpl implements IProductDomainService {
 
         productRequested.getSkus().stream().parallel()
                 .forEach(sku -> {
-                    if (AppUtil.isPresent(sku.getSkuCode()))
+                    if (AppUtils.isPresent(sku.getSkuCode()))
                         this.skuDomainService.checkSkuCodeOrError(sku.getSkuCode());
                 });
 
@@ -60,6 +60,6 @@ public class ProductDomainServiceImpl implements IProductDomainService {
     public PageRes<ProductProj> findAll(Pageable pageable) {
         Page<ProductProj> productPage = this.productDomainRepo.findAllProjectedBy(pageable);
 
-        return AppUtil.toPageRes(productPage);
+        return AppUtils.toPageRes(productPage);
     }
 }

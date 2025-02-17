@@ -1,4 +1,4 @@
-package com.dmon.sshop._infrastructure.security.model.response;
+package com.dmon.sshop._infrastructure.security.model.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -11,7 +11,10 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class Oauth2UserInfoRes {
-    private String email;
-    private String name;
+public class ExchangeTokenRequest {
+    String code;
+    String clientId;
+    String clientSecret;
+    String redirectUri;
+    String grantType;
 }

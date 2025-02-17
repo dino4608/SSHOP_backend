@@ -1,4 +1,4 @@
-package com.dmon.sshop._infrastructure.security.model.request;
+package com.dmon.sshop._infrastructure.security.model.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -11,10 +11,11 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ExchangeTokenReq {
-    String code;
-    String clientId;
-    String clientSecret;
-    String redirectUri;
-    String grantType;
+public class ExchangeTokenResponse {
+    String accessToken;
+    String expiresIn;
+    String refreshToken;
+    String scope;
+    String tokenType;
 }
+

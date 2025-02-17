@@ -2,28 +2,27 @@ package com.dmon.sshop._domain.identity.service.impl;
 
 import com.dmon.sshop._domain.common.exception.AppException;
 import com.dmon.sshop._domain.common.exception.ErrorCode;
-import com.dmon.sshop._domain.common.util.AppUtil;
+import com.dmon.sshop._domain.common.util.AppUtils;
 import com.dmon.sshop._domain.identity.factory.AccountFactory;
 import com.dmon.sshop._domain.identity.mapper.IAccountMapper;
 import com.dmon.sshop._domain.identity.model.entity.Account;
-import com.dmon.sshop._domain.identity.model.request.AccountReq;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
+import com.dmon.sshop._domain.identity.model.request.AccountSettleRequest;
+import com.dmon.sshop._domain.identity.model.request.ShopSettleRequest;
 import com.dmon.sshop._domain.identity.model.request.UsernameLoginRequest;
-import com.dmon.sshop._domain.identity.model.response.AccountRes;
+import com.dmon.sshop._domain.identity.model.response.*;
 import com.dmon.sshop._domain.identity.repository.IAccountDomainRepository;
 import com.dmon.sshop._domain.identity.service.IAccountDomainService;
+import com.dmon.sshop._domain.identity.service.IShopDomainService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -31,28 +30,15 @@ import java.util.Objects;
 @Slf4j
 public class AccountDomainServiceImpl implements IAccountDomainService {
 
+    IShopDomainService shopDomainService;
     IAccountDomainRepository accountDomainRepo;
     IAccountMapper accountMapper;
-
-    //PROFILE//
-    @Override
-    public Account getProfile(String accountId) {
-        Account account = this.getByIdOrError(accountId);
-
-        account.setId(null);
-        account.setEmail(null);
-        account.setPhone(null);
-        account.setPassword(null);
-        account.setRoles(null);
-
-        return this.getByIdOrError(accountId);
-    }
 
     //CREATE//
     @Override
     public Account onboard(Account account, Account.RoleType roleType) {
         account = this.getByEmailOrNull(account.getEmail());
-        if (AppUtil.isPresent(account)) {
+        if (AppUtils.isPresent(account)) {
             //if account is existed and role is right -> return
             if (account.getRoles().contains(roleType.name()))
                 return account;
@@ -69,102 +55,87 @@ public class AccountDomainServiceImpl implements IAccountDomainService {
     @Override
     public Account signup(UsernameLoginRequest request, Account.RoleType roleType) {
         Account account = this.getByUsernameOrNull(request.getUsername());
-        if (AppUtil.isPresent(account)) {
-            //if account is admin -> forbidden
+        if (AppUtils.isPresent(account)) {
+
             if (account.getRoles().contains(Account.RoleType.ADMIN.name()))
+                //if account is admin -> forbidden
                 throw new AppException(ErrorCode.SECURITY__FORBIDDEN);
-                //if account is buyer or seller -> existed
             else
+                //if account is buyer or seller -> existed
                 throw new AppException(ErrorCode.ACCOUNT__EXISTED_BUYER_SELLER);
         }
         //if account is not existed -> create new
-        account = this.accountMapper.toEntity(request);
+        account = this.accountMapper.toAccount(request);
         account.setRoles(new HashSet<>(Collections.singletonList(roleType.name())));
         return this.accountDomainRepo.save(AccountFactory.createAccount(account));
     }
 
+    //READ//
     @Override
-    public AccountRes createOne(AccountReq.Create accountDto) {
-        //check that email, phone should be not existed
-        if (this.accountDomainRepo.existsByUsername(accountDto.getEmail()))
-            throw new AppException(ErrorCode.ACCOUNT__EXISTED);
-        if (this.accountDomainRepo.existsByEmail(accountDto.getEmail()))
-            throw new AppException(ErrorCode.ACCOUNT__EXISTED);
-        if (this.accountDomainRepo.existsByPhone(accountDto.getPhone()))
-            throw new AppException(ErrorCode.ACCOUNT__EXISTED);
-        //prepare entity to created: modify password, role fields
-        Account accountCreated = this.accountMapper.toEntity(accountDto);
-
-        accountCreated.setRoles(new HashSet<>(Collections.singletonList(Account.RoleType.BUYER.name())));
-
-        Account accountResult = this.accountDomainRepo.save(accountCreated);
-        return this.accountMapper.toRes(accountResult);
+    public AccountInfoResponse getAccountInfo(String accountId) {
+        Account account = this.getByIdOrError(accountId);
+        return this.accountMapper.toAccountInfo(account);
     }
 
     @Override
-    public Account preparePreCreate(AccountReq.Create accountDto, Account.RoleType roleType) {
-        Account accountFound = this.accountDomainRepo.findByUsername(accountDto.getUsername()).orElse(null);
-        if (Objects.nonNull(accountFound)) {
-            //if account is present, throw exception
-            if (accountFound.getRoles().contains(Account.RoleType.BUYER.name()))
-                throw new AppException(ErrorCode.SECURITY__USER_NOT_REGISTER_SELLER);
-            if (accountFound.getRoles().contains(Account.RoleType.SELLER.name()))
-                throw new AppException(ErrorCode.SECURITY__SELLER_NOT_REGISTER_SELLER);
-            if (accountFound.getRoles().contains((Account.RoleType.ADMIN.name())))
-                throw new AppException(ErrorCode.SECURITY__ADMIN_NOT_REGISTER_SELLER);
-        }
-        //if account isn't present, create new
-        Account accountCreated = Account.builder()
-                .username(accountDto.getUsername())
-//                .password(this.securityHelper.hashPassword(accountDto.getPassword())) //todo
-                .roles(new HashSet<>(Collections.singletonList(roleType.name())))
+    public ShopInfoResponse getShopInfo(String accountId) {
+        return this.shopDomainService.getShopInfo(accountId);
+    }
+
+    @Override
+    public ContactInfoResponse getContactInfo(String accountId) {
+        return this.shopDomainService.getContactInfo(accountId);
+    }
+
+    @Override
+    public LoginInfoResponse getLoginInfo(String accountId) {
+        Account account = this.getByIdOrError(accountId);
+        return LoginInfoResponse.builder()
+                .username(account.getUsername())
+                .maskedEmail(AppUtils.maskMiddle(account.getEmail(), 1))
+                .maskedPhone(AppUtils.maskStart(account.getPhone(), 4))
+                .maskedPassword("**********")
                 .build();
-
-        return accountCreated;
     }
 
-    //UPDATE//
     @Override
-    public AccountRes updateOne(String accountId, AccountReq.Update body) {
-        //check
-        this.findOne(accountId);
-        Account account = this.accountMapper.toEntity(body);
-        account.setId(accountId);
-        account = this.accountDomainRepo.save(account);
-        return this.accountMapper.toRes(account);
+    public CitizenInfoResponse getCitizenInfo(String accountId) {
+        return CitizenInfoResponse.builder()
+                .maskedCard(AppUtils.maskMiddle("084444444460", 2))
+                .maskedName(AppUtils.maskMiddle("Dino Nguyen Tran", 2))
+                .build();
     }
 
-    //DELETE//
     @Override
-    public void deleteOne(String accountId) {
-        accountDomainRepo.deleteById(accountId);
+    public Account getOne(String accountId) {
+        Account account = this.accountDomainRepo.findById(accountId)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT__NOT_FOUND));
+        return AccountFactory.responseAccount(account);
     }
 
-    //LIST ALL//
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public List<Account> listAll() {
         List<Account> accounts;
         accounts = this.accountDomainRepo.findAll();
         return accounts;
     }
 
-    //FIND ONE//
+    //UPDATE//
     @Override
-    @PostAuthorize("returnObject.id == authentication.name")
-    public AccountRes findOne(String accountId) {
-        Account account = this.accountDomainRepo.findById(accountId)
-                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT__NOT_FOUND));
-        return this.accountMapper.toRes(account);
+    public Account settleAccountInfo(AccountSettleRequest request, String accountId) {
+        Account account = this.getByIdOrError(accountId);
+        account = this.accountMapper.toAccount(request, account);
+        account = this.accountDomainRepo.save(AccountFactory.updateAccount(account));
+        return AccountFactory.responseAccount(account);
     }
 
     @Override
-    public AccountRes findMyOne() {
-        var context = SecurityContextHolder.getContext();
-        String accountId = context.getAuthentication().getName();
-
-        return this.findOne(accountId);
+    public Shop settleShopInfo(ShopSettleRequest request, String accountId) {
+        return this.shopDomainService.settleShopInfo(request, accountId);
     }
+
+
+    //DELETE//
 
     //HELPER//
     @Override

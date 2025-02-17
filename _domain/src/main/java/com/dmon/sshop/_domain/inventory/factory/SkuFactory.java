@@ -1,17 +1,15 @@
 package com.dmon.sshop._domain.inventory.factory;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.dmon.sshop._domain.common.util.AppUtil;
-import com.dmon.sshop._domain.product.model.entity.Product;
+import com.dmon.sshop._domain.common.util.AppUtils;
 import com.dmon.sshop._domain.inventory.model.entity.Sku;
-
+import com.dmon.sshop._domain.product.model.entity.Product;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +27,7 @@ public class SkuFactory {
 
                     sku.setStatus(Sku.StatusType.LIVE.name());
 
-                    if (AppUtil.isEmpty(sku.getSkuCode()))
+                    if (AppUtils.isEmpty(sku.getSkuCode()))
                         sku.setSkuCode(this.genSkuCode());
 
                     sku.setCarts(0);
@@ -42,7 +40,7 @@ public class SkuFactory {
 
     // FIELDS//
     public String genSkuCode() {
-        String skuCode = AppUtil.genUUID();
+        String skuCode = AppUtils.genUUID();
 
         return skuCode;
     }

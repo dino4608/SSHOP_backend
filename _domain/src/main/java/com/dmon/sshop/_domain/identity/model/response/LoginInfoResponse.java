@@ -11,14 +11,9 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SellerRes {
-    String id;
-    String shopName;
-    String shopCode;
-    String shopLogo;
-    String contactEmail;
-    String contactPhone;
-    String businessType;
-    String sellerType;
-    String status;
+public class LoginInfoResponse {
+    String username;
+    String maskedEmail;
+    String maskedPhone;
+    String maskedPassword;
 }

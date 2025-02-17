@@ -2,8 +2,10 @@ package com.dmon.sshop._application.service.identity.impl;
 
 import com.dmon.sshop._application.service.identity.IAccountAppService;
 import com.dmon.sshop._domain.identity.model.entity.Account;
-import com.dmon.sshop._domain.identity.model.request.AccountReq;
-import com.dmon.sshop._domain.identity.model.response.AccountRes;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
+import com.dmon.sshop._domain.identity.model.request.AccountSettleRequest;
+import com.dmon.sshop._domain.identity.model.request.ShopSettleRequest;
+import com.dmon.sshop._domain.identity.model.response.*;
 import com.dmon.sshop._domain.identity.service.IAccountDomainService;
 import com.dmon.sshop._infrastructure.security.provider.ISecurityInfraProvider;
 import lombok.AccessLevel;
@@ -21,35 +23,36 @@ import java.util.List;
 public class AccountAppServiceImpl implements IAccountAppService {
 
     IAccountDomainService accountDomainService;
-    ISecurityInfraProvider securityInfraService;
+    ISecurityInfraProvider securityInfraProvider;
 
-    //PROFILE//
     @Override
-    public Account getProfile() {
-        return this.accountDomainService.getProfile(this.securityInfraService.getAccountId());
+    public AccountInfoResponse getAccountInfo() {
+        return this.accountDomainService.getAccountInfo(this.securityInfraProvider.getAccountId());
     }
 
     @Override
-    public AccountRes createOne(AccountReq.Create accountDto) {
-        accountDto.setPassword(this.securityInfraService.hashPassword(accountDto.getPassword()));
-
-        return this.accountDomainService.createOne(accountDto);
+    public ShopInfoResponse getShopInfo() {
+        return this.accountDomainService.getShopInfo(this.securityInfraProvider.getAccountId());
     }
 
     @Override
-    public Account preparePreCreate(AccountReq.Create accountDto, Account.RoleType roleType) {
-        return this.accountDomainService.preparePreCreate(accountDto, roleType);
+    public ContactInfoResponse getContactInfo() {
+        return this.accountDomainService.getContactInfo(this.securityInfraProvider.getAccountId());
     }
 
     @Override
-    public AccountRes updateOne(String accountId, AccountReq.Update body) {
-        return this.accountDomainService.updateOne(accountId, body);
+    public LoginInfoResponse getLoginInfo() {
+        return this.accountDomainService.getLoginInfo(this.securityInfraProvider.getAccountId());
     }
 
     @Override
-    public Void deleteOne(String accountId) {
-        this.accountDomainService.deleteOne(accountId);
-        return null;
+    public CitizenInfoResponse getCitizenInfo() {
+        return this.accountDomainService.getCitizenInfo(this.securityInfraProvider.getAccountId());
+    }
+
+    @Override
+    public Account getOne(String accountId) {
+        return this.accountDomainService.getOne(accountId);
     }
 
     @Override
@@ -58,17 +61,12 @@ public class AccountAppServiceImpl implements IAccountAppService {
     }
 
     @Override
-    public AccountRes findOne(String accountId) {
-        return this.accountDomainService.findOne(accountId);
+    public Account settleAccountInfo(AccountSettleRequest request) {
+        return this.accountDomainService.settleAccountInfo(request, this.securityInfraProvider.getAccountId());
     }
 
     @Override
-    public AccountRes findMyOne() {
-        return this.accountDomainService.findMyOne();
-    }
-
-    @Override
-    public Object updateProfile(Object request) {
-        return null;
+    public Shop settleShopInfo(ShopSettleRequest request) {
+        return this.accountDomainService.settleShopInfo(request, this.securityInfraProvider.getAccountId());
     }
 }

@@ -2,7 +2,7 @@ package com.dmon.sshop._domain.identity.factory;
 
 import com.dmon.sshop._domain.common.exception.AppException;
 import com.dmon.sshop._domain.common.exception.ErrorCode;
-import com.dmon.sshop._domain.common.util.AppUtil;
+import com.dmon.sshop._domain.common.util.AppUtils;
 import com.dmon.sshop._domain.identity.model.entity.Account;
 import com.dmon.sshop._domain.identity.model.entity.Shop;
 import com.dmon.sshop._domain.identity.model.entity.Token;
@@ -16,18 +16,19 @@ public class AccountFactory {
     public static Account createAccount(Account account) {
         //status
         account.setStatus(Account.StatusType.LIVE.toString());
-        //username and password
-        if (AppUtil.isEmpty(account.getUsername())) {
+        //username
+        if (AppUtils.isEmpty(account.getUsername())) {
             account.setUsername("user" + System.currentTimeMillis());
-            if (!account.getPassword().startsWith("$2a$")) //$2a$ present for the bcrypt algorithm
-                throw new AppException(ErrorCode.ACCOUNT__NOT_HASH_PASSWORD);
         }
+        //password
+        if (!account.getPassword().startsWith("$2a$")) //$2a$ present for the bcrypt algorithm
+            throw new AppException(ErrorCode.ACCOUNT__NOT_HASH_PASSWORD);
         //dob
-        if (AppUtil.isEmpty(account.getDob()))
+        if (AppUtils.isEmpty(account.getDob()))
             account.setStatus(Account.StatusType.LACK_INFO.toString());
         //role
         Set<String> roles = account.getRoles();
-        if (AppUtil.isEmpty(roles))
+        if (AppUtils.isEmpty(roles))
             throw new AppException(ErrorCode.ACCOUNT__LACK_INFO);
 
         Set<Account.RoleType> roleTypes = new HashSet<>();
@@ -48,6 +49,41 @@ public class AccountFactory {
         if (roleTypes.contains(Account.RoleType.SELLER))
             account.setShop(ShopFactory.createShop(Shop.builder().build(), account));
         //response
+        return account;
+    }
+
+    public static Account updateAccount(Account account) {
+        //status
+        account.setStatus(Account.StatusType.LIVE.toString());
+        //username
+        if (AppUtils.isEmpty(account.getUsername())) {
+            account.setUsername("user" + System.currentTimeMillis());
+        }
+        //password
+        if (!account.getPassword().startsWith("$2a$")) //$2a$ present for the bcrypt algorithm
+            throw new AppException(ErrorCode.ACCOUNT__NOT_HASH_PASSWORD);
+        //dob *change
+        if (AppUtils.isEmpty(account.getDob()))
+            throw new AppException(ErrorCode.ACCOUNT__LACK_INFO);
+        //role *change
+        Set<String> roles = account.getRoles();
+        if (AppUtils.isEmpty(roles))
+            throw new AppException(ErrorCode.ACCOUNT__LACK_INFO);
+        roles.stream().parallel().forEach(role -> {
+            try {
+                Account.RoleType roleType = Account.RoleType.valueOf(role);
+            } catch (IllegalArgumentException e) {
+                throw new AppException(ErrorCode.SYSTEM__KEY_UNSUPPORTED);
+            }
+        });
+        //response
+        return account;
+    }
+
+    public static Account responseAccount(Account account) {
+        account.setPassword(null);
+        account.setPhone(null);
+        account.setEmail(null);
         return account;
     }
 

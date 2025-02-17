@@ -2,7 +2,14 @@ package com.dmon.sshop._domain.identity.service.impl;
 
 import com.dmon.sshop._domain.common.exception.AppException;
 import com.dmon.sshop._domain.common.exception.ErrorCode;
+import com.dmon.sshop._domain.common.util.AppUtils;
+import com.dmon.sshop._domain.identity.factory.ShopFactory;
+import com.dmon.sshop._domain.identity.mapper.IShopMapper;
 import com.dmon.sshop._domain.identity.model.entity.Shop;
+import com.dmon.sshop._domain.identity.model.request.ShopSettleRequest;
+import com.dmon.sshop._domain.identity.model.response.ContactInfoResponse;
+import com.dmon.sshop._domain.identity.model.response.ShopInfoResponse;
+import com.dmon.sshop._domain.identity.repository.IShopDomainRepository;
 import com.dmon.sshop._domain.identity.service.IShopDomainService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,11 +23,39 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ShopDomainServiceImpl implements IShopDomainService {
 
-    //todo: repo
+    IShopDomainRepository shopDomainRepo;
+    IShopMapper shopMapper;
+
+    //READ//
+    @Override
+    public ShopInfoResponse getShopInfo(String shopId) {
+        Shop shop = this.getByIdOrError(shopId);
+        return shopMapper.toShopInfo(shop);
+    }
 
     @Override
-    public Shop findOrError(String sellerId) {
-        throw new AppException(ErrorCode.SYSTEM__UNIMPLEMENTED_FEATURE);
+    public ContactInfoResponse getContactInfo(String shopId) {
+        Shop shop = this.getByIdOrError(shopId);
+        return ContactInfoResponse.builder()
+                .maskedEmail(AppUtils.maskMiddle(shop.getContactEmail(), 1))
+                .maskedPhone(AppUtils.maskStart(shop.getContactPhone(), 4))
+                .build();
+    }
+
+    //UPDATE//
+    @Override
+    public Shop settleShopInfo(ShopSettleRequest request, String shopId) {
+        Shop shop = this.getByIdOrError(shopId);
+        shop = this.shopMapper.toShop(request, shop);
+        shop = this.shopDomainRepo.save(ShopFactory.updateShop(shop));
+        return ShopFactory.responseShop(shop);
+    }
+
+    //HELPER
+    @Override
+    public Shop getByIdOrError(String shopId) {
+        return this.shopDomainRepo.findById(shopId)
+                .orElseThrow(() -> new AppException(ErrorCode.SHOP__NOT_FOUND));
     }
 
 }

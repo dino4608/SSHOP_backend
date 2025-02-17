@@ -20,11 +20,6 @@ public class AccountInfraRepositoryImpl implements IAccountDomainRepository {
     IAccountJpaMapper accountJpaMapper;
 
     @Override
-    public void flush() {
-        this.accountJpaMapper.flush();
-    }
-
-    @Override
     public Optional<Account> findById(String id) {
         return this.accountJpaMapper.findById(id);
     }
@@ -45,21 +40,6 @@ public class AccountInfraRepositoryImpl implements IAccountDomainRepository {
     }
 
     @Override
-    public boolean existsByEmail(String email) {
-        return this.accountJpaMapper.existsByEmail(email);
-    }
-
-    @Override
-    public boolean existsByPhone(String phone) {
-        return this.accountJpaMapper.existsByPhone(phone);
-    }
-
-    @Override
-    public boolean existsByUsername(String username) {
-        return this.accountJpaMapper.existsByUsername(username);
-    }
-
-    @Override
     public Account save(Account account) {
         return this.accountJpaMapper.save(account);
     }
@@ -67,5 +47,10 @@ public class AccountInfraRepositoryImpl implements IAccountDomainRepository {
     @Override
     public void deleteById(String id) {
         this.accountJpaMapper.deleteById(id);
+    }
+
+    @Override
+    public void flush() {
+        this.accountJpaMapper.flush();
     }
 }

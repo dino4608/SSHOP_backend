@@ -44,7 +44,8 @@ public enum ErrorCode {
     //TOKEN 1300+//
     TOKEN__NOT_FOUND(1300, "Token is not found", HttpStatus.BAD_REQUEST),
     //SHOP 1400+//
-    SELLER__NOT_FOUND(1401, "Seller is not found.", HttpStatus.BAD_REQUEST),
+    SHOP__NOT_FOUND(1401, "Shop is not found.", HttpStatus.BAD_REQUEST),
+    SHOP__LACK_INFO(1402, "Shop is lack of required information.", HttpStatus.INTERNAL_SERVER_ERROR),
     //CATEGORY 1500+//
     CATEGORY__NAME_OUT_SIZE(1500, "Name should be between 4 and 40 characters.", HttpStatus.BAD_REQUEST),
     CATEGORY__DESCRIPTION_OUT_SIZE(1501, "Description should be at most 255 characters.", HttpStatus.BAD_REQUEST),

@@ -1,38 +1,41 @@
 package com.dmon.sshop._domain.identity.service;
 
 import com.dmon.sshop._domain.identity.model.entity.Account;
-import com.dmon.sshop._domain.identity.model.request.AccountReq;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
+import com.dmon.sshop._domain.identity.model.request.AccountSettleRequest;
+import com.dmon.sshop._domain.identity.model.request.ShopSettleRequest;
 import com.dmon.sshop._domain.identity.model.request.UsernameLoginRequest;
-import com.dmon.sshop._domain.identity.model.response.AccountRes;
+import com.dmon.sshop._domain.identity.model.response.*;
 
 import java.util.List;
 
 public interface IAccountDomainService {
-
-    //PROFILE//
-    Account getProfile(String accountId);
-
     // CREATE//
     Account onboard(Account account, Account.RoleType roleType);
 
     Account signup(UsernameLoginRequest request, Account.RoleType roleType);
 
-    AccountRes createOne(AccountReq.Create accountDto);
-
-    Account preparePreCreate(AccountReq.Create accountDto, Account.RoleType roleType);
-
     //READ//
+    AccountInfoResponse getAccountInfo(String accountId);
+
+    ShopInfoResponse getShopInfo(String accountId);
+
+    ContactInfoResponse getContactInfo(String accountId);
+
+    LoginInfoResponse getLoginInfo(String accountId);
+
+    CitizenInfoResponse getCitizenInfo(String accountId);
+
+    Account getOne(String accountId);
+
     List<Account> listAll();
 
-    AccountRes findOne(String accountId);
-
-    AccountRes findMyOne();
-
     // UPDATE//
-    AccountRes updateOne(String accountId, AccountReq.Update body);
+    Account settleAccountInfo(AccountSettleRequest request, String accountId);
+
+    Shop settleShopInfo(ShopSettleRequest request, String accountId);
 
     // DELETE//
-    void deleteOne(String accountId);
 
     //HELPER//
     Account getByIdOrError(String accountId);

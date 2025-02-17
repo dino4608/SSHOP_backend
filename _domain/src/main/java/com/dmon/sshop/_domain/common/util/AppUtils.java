@@ -3,6 +3,7 @@ package com.dmon.sshop._domain.common.util;
 import com.dmon.sshop._domain.common.base.PageReq;
 import com.dmon.sshop._domain.common.base.PageRes;
 import com.github.slugify.Slugify;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,20 +13,44 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.UUID;
 
-public class AppUtil {
+public class AppUtils {
+
+    public static String maskMiddle(String plainText, int keptLength) {
+        if (StringUtils.isEmpty(plainText))
+            return plainText;
+        //the non-masked text
+        int maskEndIndex = plainText.length() - keptLength;
+        String startText = plainText.substring(0, keptLength);
+        String endText = plainText.substring(maskEndIndex);
+        //the masked text
+        String middleText = new String(new char[maskEndIndex - keptLength]).replace('\0', '*');
+        return startText + middleText + endText;
+    }
+
+    public static String maskStart(String plainText, int keptLength) {
+        if (StringUtils.isEmpty(plainText))
+            return plainText;
+        //the non-masked text
+        int maskEndIndex = plainText.length() - keptLength;
+        String endText = plainText.substring(maskEndIndex);
+        //the masked text
+        String startText = new String(new char[endText.length()]).replace('\0', '*');
+        return startText + endText;
+    }
+
     /**
-     * @desc check a value object is present
      * @param value: Object
      * @return true if non-null, false if null
+     * @desc check a value object is present
      */
     public static boolean isPresent(Object value) {
         return value != null;
     }
 
     /**
-     * @desc check a value object is empty
      * @param value: Object
      * @return true if null, false if non-null
+     * @desc check a value object is empty
      */
     public static boolean isEmpty(Object value) {
         return value == null;
@@ -72,11 +97,11 @@ public class AppUtil {
                 : Sort.Direction.DESC;
 
         return PageRequest.of(--page, size, direction, sort); // Page of client starts 1. But PageNumber of Jpa starts
-                                                              // from 0
+        // from 0
     }
 
     public static Pageable toPageable(PageReq pageReq) {
-        Pageable pageable = AppUtil.toPageable(pageReq.getPage(), pageReq.getSize(), pageReq.getSort(),
+        Pageable pageable = AppUtils.toPageable(pageReq.getPage(), pageReq.getSize(), pageReq.getSort(),
                 pageReq.getDirect());
         return pageable;
     }

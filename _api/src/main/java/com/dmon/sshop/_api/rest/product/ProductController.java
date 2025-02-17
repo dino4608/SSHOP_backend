@@ -3,10 +3,10 @@ package com.dmon.sshop._api.rest.product;
 import com.dmon.sshop._application.service.product.IProductAppService;
 import com.dmon.sshop._domain.common.base.PageReq;
 import com.dmon.sshop._domain.common.base.PageRes;
-import com.dmon.sshop._domain.common.util.AppUtil;
+import com.dmon.sshop._domain.common.util.AppUtils;
+import com.dmon.sshop._domain.product.model.entity.Product;
 import com.dmon.sshop._domain.product.model.projection.ProductProj;
 import com.dmon.sshop._domain.product.model.request.ProductReq;
-import com.dmon.sshop._domain.product.model.entity.Product;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -58,7 +58,7 @@ public class ProductController {
         ) {
             return ResponseEntity
                     .ok()
-                    .body(this.productAppService.findAll(AppUtil.toPageable(pageReq)));
+                    .body(this.productAppService.findAll(AppUtils.toPageable(pageReq)));
         }
     }
 

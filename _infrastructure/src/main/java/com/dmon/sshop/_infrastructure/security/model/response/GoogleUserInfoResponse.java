@@ -11,11 +11,15 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ExchangeTokenRes {
-    String accessToken;
-    String expiresIn;
-    String refreshToken;
-    String scope;
-    String tokenType;
+public class GoogleUserInfoResponse {
+    private String id;
+    private String email;
+    private boolean verifiedEmail;
+    private String name;
+    private String givenName;
+    private String familyName;
+    private String link;
+    private String picture;
+    private String gender;
+    private String locale;
 }
-

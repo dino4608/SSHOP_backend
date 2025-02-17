@@ -6,10 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IAccountDomainRepository {
-
-    void flush();
-
-    // FIND//
+    //READ//
     Optional<Account> findById(String id);
 
     Optional<Account> findByUsername(String username);
@@ -18,15 +15,11 @@ public interface IAccountDomainRepository {
 
     List<Account> findAll();
 
-    // EXIST//
-    boolean existsByEmail(String email);
-
-    boolean existsByPhone(String phone);
-
-    boolean existsByUsername(String username);
-
-    // PERSIST//
+    //WRITE//
     Account save(Account account);
 
     void deleteById(String id);
+
+    //OTHERS//
+    void flush();
 }
