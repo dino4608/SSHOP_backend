@@ -3,7 +3,7 @@ package com.dmon.sshop._domain.product.service.impl;
 import com.dmon.sshop._domain.common.base.PageRes;
 import com.dmon.sshop._domain.common.exception.AppException;
 import com.dmon.sshop._domain.common.exception.ErrorCode;
-import com.dmon.sshop._domain.common.util.AppUtil;
+import com.dmon.sshop._domain.common.util.AppUtils;
 import com.dmon.sshop._domain.product.mapper.ICategoryMapper;
 import com.dmon.sshop._domain.product.model.entity.Category;
 import com.dmon.sshop._domain.product.model.projection.CategoryProj;
@@ -50,7 +50,7 @@ public class CategoryDomainServiceImpl implements ICategoryDomainService {
 
         Category cateUpdated = this.findOrError(cateId);
 
-        AppUtil.updateNonNull(cateUpdated, cateRequested);
+        AppUtils.updateNonNull(cateUpdated, cateRequested);
 
         Category cateResult = this.cateDomainRepo.save(cateUpdated);
         return cateResult;
@@ -60,7 +60,7 @@ public class CategoryDomainServiceImpl implements ICategoryDomainService {
     @Override
     public PageRes<CategoryProj> findAll(Pageable pageable) {
         Page<CategoryProj> catePage = this.cateDomainRepo.findAllProjectedBy(pageable);
-        return AppUtil.toPageRes(catePage);
+        return AppUtils.toPageRes(catePage);
     }
 
     @Override

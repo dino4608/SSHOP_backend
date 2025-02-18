@@ -5,7 +5,7 @@ import com.dmon.sshop._domain.shopping.model.entity.CartItem;
 import com.dmon.sshop._domain.shopping.model.request.CartItemAddReq;
 import com.dmon.sshop._domain.shopping.model.request.CartItemEditReq;
 import com.dmon.sshop._domain.shopping.service.ICartDomainService;
-import com.dmon.sshop._infrastructure.security.ISecurityInfraHelper;
+import com.dmon.sshop._infrastructure.security.provider.ISecurityInfraProvider;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class CartAppServiceImpl implements ICartAppService {
 
     ICartDomainService cartDomainService;
-    ISecurityInfraHelper securityInfraHelper;
+    ISecurityInfraProvider securityInfraHelper;
 
     //CREATE//
     @Override

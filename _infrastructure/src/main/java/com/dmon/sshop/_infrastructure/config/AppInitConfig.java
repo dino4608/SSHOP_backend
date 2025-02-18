@@ -1,7 +1,10 @@
 package com.dmon.sshop._infrastructure.config;
 
 import com.dmon.sshop._domain.identity.model.entity.Account;
+import com.dmon.sshop._domain.identity.model.entity.Token;
 import com.dmon.sshop._domain.identity.repository.IAccountDomainRepository;
+import com.dmon.sshop._domain.identity.repository.ITokenDomainRepository;
+import com.dmon.sshop._infrastructure.security.provider.ISecurityInfraProvider;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -9,8 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collections;
 import java.util.HashSet;
 
 @Configuration
@@ -18,24 +21,35 @@ import java.util.HashSet;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class AppInitConfig {
-    PasswordEncoder passwordEncoder;
 
     @Bean
-    ApplicationRunner applicationRunner(IAccountDomainRepository accountRepo) {
+    ApplicationRunner applicationRunner(
+            IAccountDomainRepository accountDomainRepo,
+            ITokenDomainRepository tokenDomainRepo,
+            ISecurityInfraProvider securityInfraProvider
+    ) {
         return args -> {
-            if (accountRepo.findByUsername("admin").isEmpty()) {
-                HashSet<String> roles = new HashSet<>();
-                roles.add(Account.RoleType.ADMIN.name());
+            if (accountDomainRepo.findByUsername("admin").isEmpty()) {
+                //todo: use the ddd factory
+                HashSet<String> roles = new HashSet<>(Collections.singletonList(Account.RoleType.ADMIN.name()));
+                String password = securityInfraProvider.hashPassword("123456");
 
                 Account account = Account.builder()
                         .username("admin")
                         .email("admin@sshop.com")
-                        .password(passwordEncoder.encode("123456"))
+                        .password(password)
                         .roles(roles)
                         .build();
 
-                accountRepo.save(account);
-                log.warn("An admin account have been created with password 123456.Please change it !");
+                Token token = Token.builder()
+                        .account(account)
+                        .build();
+
+                account.setToken(token);
+
+                accountDomainRepo.save(account);
+
+                log.warn("An admin account have been created with password 123456. Please change it!");
             }
         };
     }

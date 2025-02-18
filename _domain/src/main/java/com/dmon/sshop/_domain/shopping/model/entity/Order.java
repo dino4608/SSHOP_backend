@@ -1,8 +1,8 @@
 package com.dmon.sshop._domain.shopping.model.entity;
 
 import com.dmon.sshop._domain.common.base.BaseEntity;
-import com.dmon.sshop._domain.identity.model.entity.Seller;
-import com.dmon.sshop._domain.identity.model.entity.User;
+import com.dmon.sshop._domain.identity.model.entity.Account;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +14,6 @@ import org.hibernate.annotations.SQLRestriction;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -29,18 +28,21 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Order extends BaseEntity {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "orderId", nullable = false, updatable = false)
     String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", updatable = false, nullable = false)
+    @JoinColumn(name = "buyerId", updatable = false, nullable = false)
     @JsonIgnore
-    User user;
+    Account buyer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sellerId", updatable = false, nullable = false)
+    @JoinColumn(name = "shopId", updatable = false, nullable = false)
     @JsonIgnore
-    Seller seller;
+    Shop shop;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "addressId")
@@ -58,7 +60,7 @@ public class Order extends BaseEntity {
 
     float shippingFee;
 
-    float discount; //seller discount + platform discount
+    float discount; // seller discount + platform discount
 
     float shippingDiscount;
 
@@ -74,15 +76,9 @@ public class Order extends BaseEntity {
 
     Instant deliveryDate;
 
-    boolean isReviewable;
-
     //NESTED OBJECTS//
-    public enum StatusType {
-        DRAFT, UNPAID, PREPARING, TRANSIT, DELIVERING, DELIVERED, RETURN, CANCELED
-    }
+    public enum StatusType {DRAFT, UNPAID, PREPARING, TRANSIT, DELIVERING, DELIVERED, RETURN, CANCELED,}
 
-    public enum PaymentMethodType {
-        COD, ZALOPAY, MONO, VNPAY
-    }
+    public enum PaymentMethodType {COD, ZALOPAY, MONO, VNPAY,}
 
 }

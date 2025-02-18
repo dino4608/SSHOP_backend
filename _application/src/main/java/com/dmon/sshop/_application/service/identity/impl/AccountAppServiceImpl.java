@@ -2,10 +2,12 @@ package com.dmon.sshop._application.service.identity.impl;
 
 import com.dmon.sshop._application.service.identity.IAccountAppService;
 import com.dmon.sshop._domain.identity.model.entity.Account;
-import com.dmon.sshop._domain.identity.model.request.AccountReq;
-import com.dmon.sshop._domain.identity.model.response.AccountRes;
-import com.dmon.sshop._domain.identity.servicev2.IAccountDomainService;
-import com.dmon.sshop._infrastructure.security.impl.SecurityInfraHelperImpl;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
+import com.dmon.sshop._domain.identity.model.request.AccountSettleRequest;
+import com.dmon.sshop._domain.identity.model.request.ShopSettleRequest;
+import com.dmon.sshop._domain.identity.model.response.*;
+import com.dmon.sshop._domain.identity.service.IAccountDomainService;
+import com.dmon.sshop._infrastructure.security.provider.ISecurityInfraProvider;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,51 +21,52 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class AccountAppServiceImpl implements IAccountAppService {
+
     IAccountDomainService accountDomainService;
+    ISecurityInfraProvider securityInfraProvider;
 
-    SecurityInfraHelperImpl securityHelper;
     @Override
-    public AccountRes createOne(AccountReq.Create accountDto) {
-        return null;
-//        accountDto.setPassword(this.securityHelper.hashPassword(accountDto.getPassword()));
-
-//        return this.accountDomainService.createOne(accountDto);
+    public AccountInfoResponse getAccountInfo() {
+        return this.accountDomainService.getAccountInfo(this.securityInfraProvider.getAccountId());
     }
 
     @Override
-    public Account preparePreCreate(AccountReq.Create accountDto, Account.RoleType roleType) {
-        return null;
-//        return this.accountDomainService.preparePreCreate(accountDto, roleType);
+    public ShopInfoResponse getShopInfo() {
+        return this.accountDomainService.getShopInfo(this.securityInfraProvider.getAccountId());
     }
 
     @Override
-    public AccountRes updateOne(String accountId, AccountReq.Update body) {
-        return null;
-//        return this.accountDomainService.updateOne(accountId, body);
+    public ContactInfoResponse getContactInfo() {
+        return this.accountDomainService.getContactInfo(this.securityInfraProvider.getAccountId());
     }
 
     @Override
-    public Void deleteOne(String accountId) {
-        return null;
-//        this.accountDomainService.deleteOne(accountId);
-//        return null;
+    public LoginInfoResponse getLoginInfo() {
+        return this.accountDomainService.getLoginInfo(this.securityInfraProvider.getAccountId());
+    }
+
+    @Override
+    public CitizenInfoResponse getCitizenInfo() {
+        return this.accountDomainService.getCitizenInfo(this.securityInfraProvider.getAccountId());
+    }
+
+    @Override
+    public Account getOne(String accountId) {
+        return this.accountDomainService.getOne(accountId);
     }
 
     @Override
     public List<Account> listAll() {
-        return null;
-//        return this.accountDomainService.listAll();
+        return this.accountDomainService.listAll();
     }
 
     @Override
-    public AccountRes findOne(String accountId) {
-        return null;
-//        return this.accountDomainService.findOne(accountId);
+    public Account settleAccountInfo(AccountSettleRequest request) {
+        return this.accountDomainService.settleAccountInfo(request, this.securityInfraProvider.getAccountId());
     }
 
     @Override
-    public AccountRes findMyOne() {
-        return null;
-//        return this.accountDomainService.findMyOne();
+    public Shop settleShopInfo(ShopSettleRequest request) {
+        return this.accountDomainService.settleShopInfo(request, this.securityInfraProvider.getAccountId());
     }
 }

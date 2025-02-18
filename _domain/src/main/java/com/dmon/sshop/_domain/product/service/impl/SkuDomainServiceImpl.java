@@ -34,6 +34,7 @@ public class SkuDomainServiceImpl implements ISkuDomainService {
     public Sku findOrError(String skuId) {
         Sku skuPresent = this.skuDomainRepo.findById(skuId)
                 .orElseThrow(() -> new AppException(ErrorCode.SKU__NOT_FOUND));
-        return null;
+
+        return skuPresent;
     }
 }

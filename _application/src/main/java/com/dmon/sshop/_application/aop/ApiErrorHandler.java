@@ -8,6 +8,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @ControllerAdvice
@@ -19,8 +20,8 @@ public class ApiErrorHandler {
      * @param: AppException
      * @return: ApiResponse
      */
-    @org.springframework.web.bind.annotation.ExceptionHandler(value = AppException.class)
-    ResponseEntity<ApiRes<Object>> handleException(AppException exception){
+    @ExceptionHandler(value = AppException.class)
+    ResponseEntity<ApiRes<Object>> handleException(AppException exception) {
         ApiRes<Object> apiError = ApiRes.builder()
                 .success(false)
                 .code(exception.getCode())
@@ -35,7 +36,7 @@ public class ApiErrorHandler {
      * @param: RuntimeException
      * @return: ApiResponse
      */
-    @org.springframework.web.bind.annotation.ExceptionHandler(value = RuntimeException.class)
+    @ExceptionHandler(value = RuntimeException.class)
     ResponseEntity<ApiRes<Object>> handleException(RuntimeException exception) {
         log.error("Unhandled exception occurred: ", exception);
 
@@ -56,14 +57,15 @@ public class ApiErrorHandler {
      * @params: RuntimeException
      * @return: ApiResponse
      */
-    @org.springframework.web.bind.annotation.ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<ApiRes<Object>> handleException(MethodArgumentNotValidException exception) {
         String enumKey = exception.getFieldError().getDefaultMessage();
 
         ErrorCode error = ErrorCode.SYSTEM__KEY_UNSUPPORTED;
         try {
             error = ErrorCode.valueOf(enumKey);
-        } catch (IllegalArgumentException ignored){ }
+        } catch (IllegalArgumentException ignored) {
+        }
 
         ApiRes<Object> apiError = ApiRes.builder()
                 .success(false)
@@ -77,11 +79,11 @@ public class ApiErrorHandler {
     /**
      * Handle exception threw in the service tier by spring security
      *
-     * @param: AccessDeniedException
      * @return ApiResponse
+     * @param: AccessDeniedException
      */
-    @org.springframework.web.bind.annotation.ExceptionHandler(value = AccessDeniedException.class)
-    ResponseEntity<ApiRes<Object>> handleException(AccessDeniedException exception){
+    @ExceptionHandler(value = AccessDeniedException.class)
+    ResponseEntity<ApiRes<Object>> handleException(AccessDeniedException exception) {
         ErrorCode error = ErrorCode.SECURITY__UNAUTHORIZED;
         return ResponseEntity
                 .status(error.getStatus())
@@ -93,8 +95,8 @@ public class ApiErrorHandler {
                 );
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    ResponseEntity<ApiRes<Object>> handleException(HttpRequestMethodNotSupportedException exception){
+    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    ResponseEntity<ApiRes<Object>> handleException(HttpRequestMethodNotSupportedException exception) {
         ErrorCode error = ErrorCode.SYSTEM__METHOD_NOT_SUPPORTED;
         return ResponseEntity
                 .status(error.getStatus())
@@ -106,8 +108,8 @@ public class ApiErrorHandler {
                 );
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(value = NoResourceFoundException.class)
-    ResponseEntity<ApiRes<Object>> handleException(NoResourceFoundException exception){
+    @ExceptionHandler(value = NoResourceFoundException.class)
+    ResponseEntity<ApiRes<Object>> handleException(NoResourceFoundException exception) {
         ErrorCode error = ErrorCode.SYSTEM__ROUTE_NOT_SUPPORTED;
         return ResponseEntity
                 .status(error.getStatus())

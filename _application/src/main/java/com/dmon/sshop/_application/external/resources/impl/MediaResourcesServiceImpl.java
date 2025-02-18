@@ -32,7 +32,7 @@ import java.util.List;
 @Slf4j
 public class MediaResourcesServiceImpl implements IMediaResourcesService {
     @NonFinal
-    @Value("${sshop.media.uri}")
+    @Value("${media.uri}")
     String mediaUri;
 
     final List<String> allowedExtensions = Arrays.asList("pdf", "jpg", "jpeg", "png", "doc", "docx");
@@ -58,7 +58,7 @@ public class MediaResourcesServiceImpl implements IMediaResourcesService {
         //check in extensions
         boolean isInExt = allowedExtensions
                 .stream()
-                .anyMatch(e ->  file.getOriginalFilename().toLowerCase().endsWith("." + e));
+                .anyMatch(e -> file.getOriginalFilename().toLowerCase().endsWith("." + e));
         if (!isInExt)
             throw new AppException(ErrorCode.MEDIA__FILE_OUT_EXTENSIONS);
         //todo: check other cases more

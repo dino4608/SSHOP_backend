@@ -34,7 +34,7 @@ public class OrderController {
     @RequestMapping("/order")
     @AllArgsConstructor
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-    public static class OrderUserController {
+    public static class OrderBuyerController {
 
         IOrderAppService orderAppService;
 

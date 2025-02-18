@@ -2,7 +2,7 @@ package com.dmon.sshop._domain.shopping.factory;
 
 import com.dmon.sshop._domain.common.exception.AppException;
 import com.dmon.sshop._domain.common.exception.ErrorCode;
-import com.dmon.sshop._domain.identity.model.entity.User;
+import com.dmon.sshop._domain.identity.model.entity.Account;
 import com.dmon.sshop._domain.shopping.model.entity.Cart;
 import com.dmon.sshop._domain.shopping.model.entity.CartItem;
 
@@ -11,11 +11,18 @@ import java.util.ArrayList;
 public class CartFactory {
     public static Cart createCart(String userId) {
         Cart cart = Cart.builder()
-                .user(User.builder().id(userId).build())
+                .buyer(Account.builder().id(userId).build())
                 .items(new ArrayList<>())
                 .count(0)
                 .build();
 
+        return cart;
+    }
+
+    public static Cart createCart(Cart cart, Account buyer) {
+        cart.setItems(new ArrayList<>());
+        cart.setCount(0);
+        cart.setBuyer(buyer);
         return cart;
     }
 

@@ -25,20 +25,27 @@ public enum ErrorCode {
     ACCOUNT__EMAIL_NOT_MATCHED(1102, "Email should follow the email format.", HttpStatus.BAD_REQUEST),
     ACCOUNT__PHONE_NOT_MATCHED(1103, "Phone should follow the phone format.", HttpStatus.BAD_REQUEST),
     ACCOUNT__NOT_FOUND(1104, "Account is not found.", HttpStatus.BAD_REQUEST),
-    ACCOUNT__USERNAME_UNIQUE(1505, "Username already exists. Please choose a different one.", HttpStatus.BAD_REQUEST),
-    ACCOUNT__EMAIL_UNIQUE(1506, "Email already exists. Please choose a different one.", HttpStatus.BAD_REQUEST),
-    ACCOUNT__PHONE_UNIQUE(1507, "Phone already exists. Please choose a different one.", HttpStatus.BAD_REQUEST),
-    //ACCESS 1200+//
+    ACCOUNT__EXISTED(1105, "Account has already existed.", HttpStatus.BAD_REQUEST),
+    ACCOUNT__EXISTED_BUYER_SELLER(1106, "Account has already existed as buyer or seller.", HttpStatus.BAD_REQUEST),
+    ACCOUNT__LACK_INFO(1107, "Account is lack of required information.", HttpStatus.INTERNAL_SERVER_ERROR),
+    ACCOUNT__NOT_HASH_PASSWORD(1108, "Password hasn't hashed yet.", HttpStatus.INTERNAL_SERVER_ERROR),
+    //SECURITY 1200+//
     SECURITY__UNAUTHENTICATED(1200, "You are not allowed to access this resource.", HttpStatus.UNAUTHORIZED),
     SECURITY__UNAUTHORIZED(1201, "You are not permitted to access this resource.", HttpStatus.FORBIDDEN),
-    SECURITY__LOGIN_FAILED(1202, "Username or password doesn't match any our records. Please try again.", HttpStatus.BAD_REQUEST),
-    SECURITY__USER_NOT_REGISTER_SELLER(1503, "The account is a user. Please sign up with user account.", HttpStatus.BAD_REQUEST),
-    SECURITY__SELLER_NOT_REGISTER_SELLER(1504, "The account already exists. Please choose a different one.", HttpStatus.BAD_REQUEST),
-    SECURITY__ADMIN_NOT_REGISTER_SELLER(1515, "The account is banned from registration as seller.", HttpStatus.BAD_REQUEST),
-    SECURITY__NOT_IN_SECURITY(1515, "Authenticating your account is fail. Please login again.", HttpStatus.BAD_REQUEST),
-    //USER 1300+//
-    //SELLER 1400+//
-    SELLER__NOT_FOUND(1401, "Seller is not found.", HttpStatus.BAD_REQUEST),
+    SECURITY__WRONG_PASSWORD(1202, "Username or password doesn't match any our records. Please try again.", HttpStatus.BAD_REQUEST),
+    SECURITY__USER_NOT_REGISTER_SELLER(1203, "The account is a user. Please sign up with user account.", HttpStatus.BAD_REQUEST),
+    SECURITY__SELLER_NOT_REGISTER_SELLER(1204, "The account already exists. Please choose a different one.", HttpStatus.BAD_REQUEST),
+    SECURITY__ADMIN_NOT_REGISTER_SELLER(1215, "The account is banned from registration as seller.", HttpStatus.BAD_REQUEST),
+    SECURITY__NOT_IN_SECURITY(1216, "Authenticating your account is fail. Please login again.", HttpStatus.BAD_REQUEST),
+    SECURITY__REFRESH_TOKEN_FAILED(1217, "Refresh token is old or not authentic", HttpStatus.BAD_REQUEST),
+    OAUTH2__EXCHANGE_TOKEN_FAILED(1218, "Exchanging code for token failed", HttpStatus.BAD_REQUEST),
+    OAUTH2__GET_USERINFO_FAILED(1219, "Getting user information failed", HttpStatus.BAD_REQUEST),
+    SECURITY__FORBIDDEN(1220, "Action is forbidden.", HttpStatus.FORBIDDEN),
+    //TOKEN 1300+//
+    TOKEN__NOT_FOUND(1300, "Token is not found", HttpStatus.BAD_REQUEST),
+    //SHOP 1400+//
+    SHOP__NOT_FOUND(1401, "Shop is not found.", HttpStatus.BAD_REQUEST),
+    SHOP__LACK_INFO(1402, "Shop is lack of required information.", HttpStatus.INTERNAL_SERVER_ERROR),
     //CATEGORY 1500+//
     CATEGORY__NAME_OUT_SIZE(1500, "Name should be between 4 and 40 characters.", HttpStatus.BAD_REQUEST),
     CATEGORY__DESCRIPTION_OUT_SIZE(1501, "Description should be at most 255 characters.", HttpStatus.BAD_REQUEST),
@@ -85,9 +92,7 @@ public enum ErrorCode {
     ORDER__QUANTITY_MIN(2200, "The quantity should be at least 1.", HttpStatus.BAD_REQUEST),
     ORDER__QUANTITY_MAX(2201, "The quantity should not go beyond the available stock.", HttpStatus.BAD_REQUEST),
     ORDER__NOT_FOUND(2202, "The order is not found.", HttpStatus.BAD_REQUEST),
-    ORDER__PAYMENT_METHOD_UNSUPPORTED(2203, "The payment method is unsupported.", HttpStatus.BAD_REQUEST)
-
-    ;
+    ORDER__PAYMENT_METHOD_UNSUPPORTED(2203, "The payment method is unsupported.", HttpStatus.BAD_REQUEST);
 
     int code;
     String message;

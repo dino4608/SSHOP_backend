@@ -1,28 +1,50 @@
 package com.dmon.sshop._domain.identity.service;
 
+import com.dmon.sshop._domain.identity.model.entity.Account;
+import com.dmon.sshop._domain.identity.model.entity.Shop;
+import com.dmon.sshop._domain.identity.model.request.AccountSettleRequest;
+import com.dmon.sshop._domain.identity.model.request.ShopSettleRequest;
+import com.dmon.sshop._domain.identity.model.request.UsernameLoginRequest;
+import com.dmon.sshop._domain.identity.model.response.*;
+
 import java.util.List;
 
-import com.dmon.sshop._domain.identity.model.request.AccountReq;
-import com.dmon.sshop._domain.identity.model.response.AccountRes;
-import com.dmon.sshop._domain.identity.model.entity.Account;
+public interface IAccountDomainService {
+    // CREATE//
+    Account onboard(Account account, Account.RoleType roleType);
 
-//public interface IAccountDomainService {
-//    // CREATE//
-//    AccountRes createOne(AccountReq.Create accountDto);
-//
-//    Account preparePreCreate(AccountReq.Create accountDto, Account.RoleType roleType);
-//
-//    // UPDATE//
-//    AccountRes updateOne(String accountId, AccountReq.Update body);
-//
-//    // DELETE//
-//    void deleteOne(String accountId);
-//
-//    // LIST//
-//    List<Account> listAll();
-//
-//    // FIND//
-//    AccountRes findOne(String accountId);
-//
-//    AccountRes findMyOne();
-//}
+    Account signup(UsernameLoginRequest request, Account.RoleType roleType);
+
+    //READ//
+    AccountInfoResponse getAccountInfo(String accountId);
+
+    ShopInfoResponse getShopInfo(String accountId);
+
+    ContactInfoResponse getContactInfo(String accountId);
+
+    LoginInfoResponse getLoginInfo(String accountId);
+
+    CitizenInfoResponse getCitizenInfo(String accountId);
+
+    Account getOne(String accountId);
+
+    List<Account> listAll();
+
+    // UPDATE//
+    Account settleAccountInfo(AccountSettleRequest request, String accountId);
+
+    Shop settleShopInfo(ShopSettleRequest request, String accountId);
+
+    // DELETE//
+
+    //HELPER//
+    Account getByIdOrError(String accountId);
+
+    Account getByEmailOrNull(String username);
+
+    Account getByUsernameOrError(String username);
+
+    Account getByUsernameOrNull(String username);
+
+    void checkUsernameIsUnique(String username);
+}
