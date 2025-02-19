@@ -1,0 +1,31 @@
+//for main
+@font-face {
+  font-family: TikTokFont;
+  src: url('/font/TikTokText-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: TikTokMedium;
+  src: url('/font/TikTokText-Medium.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* page header */
+.ant-flex {
+  margin-top: 14px !important;
+}
+
+.dmon-title-header {
+  font-family: TikTokFont, Arial, Tahoma, PingFangSC, sans-serif;
+}
+
+/*
+<img
+  src="https://via.placeholder.com/300"
+  alt="Illustration"
+  style={{ maxWidth: "100%", height: "auto" }}
+/>
+*/

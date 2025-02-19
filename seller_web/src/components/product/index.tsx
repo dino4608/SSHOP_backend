@@ -1,0 +1,1 @@
+export { default as PublicList } from './product.list'

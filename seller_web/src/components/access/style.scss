@@ -1,0 +1,43 @@
+.arco-form-label-item {
+    >label {
+        color: #000;
+        font-family: 'TikTokMedium';
+    }
+
+
+    height: 21px;
+}
+
+.arco-input {
+    &-size-large {
+        padding: 10px 12px;
+        border-radius: 4px;
+        background-color: #fff;
+        border-color: #00000028;
+
+        &:focus {
+            border-color: #000;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    &-inner-wrapper {
+        &-large {
+            padding: 0px 12px !important;
+            border-radius: 4px !important;
+            background-color: #fff;
+            border-color: #00000028 !important;
+
+        }
+
+        &-focus {
+            border-color: #000 !important;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+        }
+
+        &-error {
+            border-color: red !important;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+        }
+    }
+}
